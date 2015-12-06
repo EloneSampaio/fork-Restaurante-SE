@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/filechooser-1.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/jcalendar-1.1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/jcommon-1.0.23.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/jfreechart-1.0.19.jar" sourcepath="src/main/resources/jfreechart-1.0.19.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/jxdatepicker-support-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/nachocalendar-0.23.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/swingx-0.9.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/swingx-1.6.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/synthetica.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/syntheticaAddons.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/syntheticaAluOxide.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/syntheticaAluOxideAddon.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/syntheticaBlackEye.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/syntheticaBlackMoon.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/syntheticaBlackStar.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/syntheticaBlueIce.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/syntheticaBlueMoon.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/syntheticaPlain.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/weblaf-complete-1.28.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
