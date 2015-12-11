@@ -61,7 +61,7 @@ public class EstoqueController {
 		ArrayList linha = new ArrayList();
 
 		for (Produto dados : dao1.findAll()) {
-			Object object = new Object[] { dados.getId(), dados.getNome(), dados.getMinimoInventario(),
+			Object object = new Object[] { dados.getId(), dados.getNome(), dados.getestoqueCritico(),
 					dados.getPrecoCompra(), dados.getPrecoVenda(), };
 			linha.add(object);
 

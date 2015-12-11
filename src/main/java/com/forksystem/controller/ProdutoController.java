@@ -8,6 +8,8 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -66,22 +68,26 @@ public class ProdutoController {
 		initializeTable();
 		gui.getTable().addMouseListener((new OuvirCliente()));
 		personalizarTabela();
+		buscarCategoria();
 		disableAllBtn(false);
 
-		preencherCombobox(gui.getCmbUnidade());
+		preencherComboboxUnidade(gui.getCmbUnidade());
 		preencherCombobox(gui.getCmbCategoria());
 	}
 
 	public void preencherCombobox(JComboBox<Categoria> cb) {
-		// ArrayList<Unidade> unidade = new
-		// ArrayList<Unidade>(unidad.findAll());
-		// ComboBoxModelPersonalizado modelUnidade = new
-		// ComboBoxModelPersonalizado(unidade);
-		// gui.getCmbUnidade().setModel(modelUnidade);
-
-		ArrayList<Categoria> categoria = new ArrayList<Categoria>(categori.findAll());
+		ArrayList<Categoria> categoria = new ArrayList<Categoria>();
+		categoria.add(null);
+		categoria.addAll((categori.findAll()));
 		ComboBoxModelPersonalizado modelCategoria = new ComboBoxModelPersonalizado(categoria);
 		gui.getCmbCategoria().setModel(modelCategoria);
+		gui.getCmbCatgoria().setModel(modelCategoria);
+	}
+
+	public void preencherComboboxUnidade(JComboBox<Unidade> cb) {
+		ArrayList<Unidade> unidade = new ArrayList<Unidade>(unidad.findAll());
+		ComboBoxModelPersonalizado modelUnidade = new ComboBoxModelPersonalizado(unidade);
+		gui.getCmbUnidade().setModel(modelUnidade);
 
 	}
 
@@ -89,13 +95,13 @@ public class ProdutoController {
 		ArrayList linha = new ArrayList();
 
 		for (Produto dados : produt.findAll()) {
-			Object object = new Object[] { dados.getId(), dados.getNome(), dados.getMinimoInventario(),
-					dados.getPrecoCompra(), dados.getPrecoVenda() };
+			Object object = new Object[] { dados.getId(), dados.getNome(), dados.getestoqueCritico(),
+					dados.getPrecoCompra(), dados.getPrecoVenda(), dados.getCategoria().getNome() };
 			linha.add(object);
 
 		}
 
-		String[] colunas = new String[] { "ID", "NOME", "Minimo", "Compra", "Venda" };
+		String[] colunas = new String[] { "ID", "NOME", "Minimo", "Compra", "Venda", "Categoria" };
 		tabela = new TableModelPersonalizado(linha, colunas);
 		gui.getTable().setModel(tabela);
 		gui.getTable().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -107,6 +113,21 @@ public class ProdutoController {
 				String valor = gui.getTxtPesquisar().getText().trim();
 				sorter.setRowFilter(RowFilter.regexFilter("(?i)" + valor, 1));
 
+			}
+		});
+}
+	
+	public void buscarCategoria(){
+		gui.getCmbCatgoria().addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				if (null != gui.getCmbCatgoria().getSelectedItem()) {
+					String valor = gui.getCmbCatgoria().getSelectedItem().toString().trim();
+					sorter.setRowFilter(RowFilter.regexFilter("(?i)" + valor, 5));
+				}
+				else{
+	//				gui.getTable().setRowSorter(null);
+				}
 			}
 		});
 
@@ -144,20 +165,22 @@ public class ProdutoController {
 			produto.setNome(gui.getTxtNome().getText());
 			produto.setDescricao(gui.getTxtDescricao().getText());
 			produto.setImg(gui.getImagem().getText());
-			produto.setMinimoInventario(Integer.parseInt(gui.getTxtstoqueMinimo().getText()));
+			produto.setestoqueCritico(Integer.parseInt(gui.getTxtstoqueMinimo().getText()));
 			produto.setPrecoCOmpra(new BigDecimal(gui.getTxtPrecoCompra().getText()));
 			produto.setPrecoVenda(new BigDecimal(gui.getTxtVenda().getText()));
-			estoque.setQtd(new BigDecimal(gui.getTextEstoque().getText()));
-			estoque.setData(Calendar.getInstance());
-			estoque.setTipo(1);
+			if (gui.getTextEstoque().isVisible()) {
+				estoque.setQtd(new BigDecimal(gui.getTextEstoque().getText()));
+				estoque.setData(Calendar.getInstance());
+				estoque.setTipo(1);
+				estoque.setProduto(produto);
+				operac.saveAndFlush(estoque);
+			}
 
 			if (!gui.getTextId().getText().isEmpty()) {
 				produto.setId(Long.parseLong(gui.getTextId().getText()));
 			}
 
 			produt.saveAndFlush(produto);
-			estoque.setProduto(produto);
-			operac.saveAndFlush(estoque);
 			alerta("Operaão realizada");
 			gui.getTextId().setText(null);
 			initializeTable();
@@ -260,34 +283,34 @@ public class ProdutoController {
 		gui.getTxtDescricao().setText(produto.getDescricao());
 		gui.getTxtNome().setText(produto.getNome());
 		gui.getImagem().setText(produto.getImg());
-		gui.getTxtstoqueMinimo().setText(produto.getMinimoInventario().toString());
+		gui.getTxtstoqueMinimo().setText(produto.getestoqueCritico().toString());
 		gui.getCmbUnidade().getModel().setSelectedItem(produto.getUnidade());
 		gui.getCmbCategoria().getModel().setSelectedItem(produto.getCategoria());
 		gui.getTxtPrecoCompra().setText(produto.getPrecoCompra().toString());
 		gui.getTxtVenda().setText(produto.getPrecoVenda().toString());
+		gui.getTextEstoque().setVisible(false);
+		gui.getLblQtdestoque().setVisible(false);
+
+		if ((null == produto.getCategoria())) {
+			gui.getCmbCategoria().setSelectedItem(produto.getCategoria().toString());
+		}
+
+		if (!(null == produto.getUnidade())) {
+			gui.getCmbUnidade().setSelectedItem(produto.getUnidade().toString());
+		}
+		if (!(null == produto.getFornecedor())) {
+			gui.getTxtFornecedor().setText(produto.getFornecedor().getId() + "");
+
+		}
+		if (!(null == produto.getMarca())) {
+			gui.getTxtMarca().setText(produto.getMarca().getId() + "");
+
+		}
+
 		ImageIcon icon = new ImageIcon(produto.getImg());
 		gui.getLblImagem().setIcon(null);
 		gui.getLblImagem().setIcon(icon);
 		gui.getImagem().setVisible(false);
-		gui.getTextEstoque().setVisible(false);
-		gui.getLblQtdestoque().setVisible(false);
-
-		if (!(null==produto.getFornecedor())) {
-			gui.getTxtFornecedor().setText(produto.getFornecedor().getId() + "");
-
-		}
-
-		if (!(null==produto.getMarca())) {
-			gui.getTxtMarca().setText(produto.getMarca().getId() + "");
-
-		}
-		if((null==produto.getCategoria())){
-	          gui.getCmbCategoria().setSelectedItem(produto.getCategoria().toString());		
-		}
-		if(!(null==produto.getUnidade())){
-	          gui.getCmbUnidade().setSelectedItem(produto.getUnidade().toString());		
-		}
-		
 
 	}
 

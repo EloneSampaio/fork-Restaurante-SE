@@ -51,7 +51,6 @@ public class ViewVenda extends JInternalFrame {
 	private JComboBox cmbTipoPagamento;
 	private JComboBox cmbCartao;
 	private JButton btnNovo;
-	private JButton btnVer;
 	private JButton btnInserirItem;
 	private JButton btnExcluir;
 	private JButton btnCancelar;
@@ -109,19 +108,6 @@ public class ViewVenda extends JInternalFrame {
 								gbc_btnNovo.gridx = 0;
 								gbc_btnNovo.gridy = 1;
 								panelMenu.add(btnNovo, gbc_btnNovo);
-		
-				btnVer = new JButton("Ver Venda");
-				btnVer.setActionCommand("verDados");
-				btnVer.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-				btnVer.setForeground(new Color(255, 255, 255));
-				btnVer.setHorizontalAlignment(SwingConstants.LEFT);
-				btnVer.setIcon(new ImageIcon(ViewVenda.class.getResource("/img/PNG/archive.png")));
-				GridBagConstraints gbc_btnVer = new GridBagConstraints();
-				gbc_btnVer.fill = GridBagConstraints.BOTH;
-				gbc_btnVer.insets = new Insets(0, 0, 5, 0);
-				gbc_btnVer.gridx = 0;
-				gbc_btnVer.gridy = 2;
-				panelMenu.add(btnVer, gbc_btnVer);
 								
 										btnInserirItem = new JButton("Inserir Item");
 										btnInserirItem.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
@@ -134,21 +120,21 @@ public class ViewVenda extends JInternalFrame {
 										gbc_btnInserirItem.fill = GridBagConstraints.BOTH;
 										gbc_btnInserirItem.insets = new Insets(0, 0, 5, 0);
 										gbc_btnInserirItem.gridx = 0;
-										gbc_btnInserirItem.gridy = 3;
+										gbc_btnInserirItem.gridy = 2;
 										panelMenu.add(btnInserirItem, gbc_btnInserirItem);
-						
-								btnExcluir = new JButton("Excluir");
-								btnExcluir.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-								btnExcluir.setForeground(new Color(255, 255, 255));
-								btnExcluir.setEnabled(false);
-								btnExcluir.setIcon(new ImageIcon(ViewVenda.class.getResource("/img/PNG/minus white.png")));
-								btnExcluir.setActionCommand("excluir");
-								GridBagConstraints gbc_btnExcluir = new GridBagConstraints();
-								gbc_btnExcluir.fill = GridBagConstraints.BOTH;
-								gbc_btnExcluir.insets = new Insets(0, 0, 5, 0);
-								gbc_btnExcluir.gridx = 0;
-								gbc_btnExcluir.gridy = 4;
-								panelMenu.add(btnExcluir, gbc_btnExcluir);
+								
+										btnExcluir = new JButton("Excluir");
+										btnExcluir.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+										btnExcluir.setForeground(new Color(255, 255, 255));
+										btnExcluir.setEnabled(false);
+										btnExcluir.setIcon(new ImageIcon(ViewVenda.class.getResource("/img/PNG/minus white.png")));
+										btnExcluir.setActionCommand("excluir");
+										GridBagConstraints gbc_btnExcluir = new GridBagConstraints();
+										gbc_btnExcluir.fill = GridBagConstraints.BOTH;
+										gbc_btnExcluir.insets = new Insets(0, 0, 5, 0);
+										gbc_btnExcluir.gridx = 0;
+										gbc_btnExcluir.gridy = 3;
+										panelMenu.add(btnExcluir, gbc_btnExcluir);
 						
 								btnCancelar = new JButton("Cancelar");
 								btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
@@ -159,7 +145,7 @@ public class ViewVenda extends JInternalFrame {
 								gbc_btnCancelar.fill = GridBagConstraints.BOTH;
 								gbc_btnCancelar.insets = new Insets(0, 0, 5, 0);
 								gbc_btnCancelar.gridx = 0;
-								gbc_btnCancelar.gridy = 5;
+								gbc_btnCancelar.gridy = 4;
 								panelMenu.add(btnCancelar, gbc_btnCancelar);
 				
 						btnConfirmar = new JButton("Confirmar");
@@ -172,34 +158,35 @@ public class ViewVenda extends JInternalFrame {
 						gbc_btnConfirmar.fill = GridBagConstraints.BOTH;
 						gbc_btnConfirmar.insets = new Insets(0, 0, 5, 0);
 						gbc_btnConfirmar.gridx = 0;
-						gbc_btnConfirmar.gridy = 6;
+						gbc_btnConfirmar.gridy = 5;
 						panelMenu.add(btnConfirmar, gbc_btnConfirmar);
-		
-				btnImprimir = new JButton("Imprimir");
-				btnImprimir.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-				btnImprimir.setForeground(new Color(255, 255, 255));
-				btnImprimir.setEnabled(false);
-				btnImprimir.setHorizontalAlignment(SwingConstants.LEFT);
-				btnImprimir.setIcon(new ImageIcon(ViewVenda.class.getResource("/img/PNG/print.png")));
-				btnImprimir.setActionCommand("imprimir");
-				GridBagConstraints gbc_btnImprimir = new GridBagConstraints();
-				gbc_btnImprimir.fill = GridBagConstraints.BOTH;
-				gbc_btnImprimir.insets = new Insets(0, 0, 5, 0);
-				gbc_btnImprimir.gridx = 0;
-				gbc_btnImprimir.gridy = 7;
-				panelMenu.add(btnImprimir, gbc_btnImprimir);
-		
-				btnCalcularTotal = new JButton("Calcular Total");
-				btnCalcularTotal.setForeground(new Color(255, 255, 255));
-				btnCalcularTotal.setEnabled(false);
-				btnCalcularTotal.setIcon(new ImageIcon(ViewVenda.class.getResource("/img/PNG/calculator_add_12952 (1).png")));
-				btnCalcularTotal.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-				btnCalcularTotal.setActionCommand("calcular");
-				GridBagConstraints gbc_btnCalcularTotal = new GridBagConstraints();
-				gbc_btnCalcularTotal.fill = GridBagConstraints.BOTH;
-				gbc_btnCalcularTotal.gridx = 0;
-				gbc_btnCalcularTotal.gridy = 8;
-				panelMenu.add(btnCalcularTotal, gbc_btnCalcularTotal);
+				
+						btnImprimir = new JButton("Imprimir");
+						btnImprimir.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+						btnImprimir.setForeground(new Color(255, 255, 255));
+						btnImprimir.setEnabled(false);
+						btnImprimir.setHorizontalAlignment(SwingConstants.LEFT);
+						btnImprimir.setIcon(new ImageIcon(ViewVenda.class.getResource("/img/PNG/print.png")));
+						btnImprimir.setActionCommand("imprimir");
+						GridBagConstraints gbc_btnImprimir = new GridBagConstraints();
+						gbc_btnImprimir.fill = GridBagConstraints.BOTH;
+						gbc_btnImprimir.insets = new Insets(0, 0, 5, 0);
+						gbc_btnImprimir.gridx = 0;
+						gbc_btnImprimir.gridy = 6;
+						panelMenu.add(btnImprimir, gbc_btnImprimir);
+				
+						btnCalcularTotal = new JButton("Calcular Total");
+						btnCalcularTotal.setForeground(new Color(255, 255, 255));
+						btnCalcularTotal.setEnabled(false);
+						btnCalcularTotal.setIcon(new ImageIcon(ViewVenda.class.getResource("/img/PNG/calculator_add_12952 (1).png")));
+						btnCalcularTotal.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+						btnCalcularTotal.setActionCommand("calcular");
+						GridBagConstraints gbc_btnCalcularTotal = new GridBagConstraints();
+						gbc_btnCalcularTotal.insets = new Insets(0, 0, 5, 0);
+						gbc_btnCalcularTotal.fill = GridBagConstraints.BOTH;
+						gbc_btnCalcularTotal.gridx = 0;
+						gbc_btnCalcularTotal.gridy = 7;
+						panelMenu.add(btnCalcularTotal, gbc_btnCalcularTotal);
 
 		panelDados = new JPanel();
 		panelDados.setForeground(new Color(0, 0, 0));
@@ -295,6 +282,7 @@ public class ViewVenda extends JInternalFrame {
 		panelDados.add(lblDesconto);
 
 		txtDesconto = new JTextField();
+		txtDesconto.setDocument(new OnlyNumber());
 		txtDesconto.setBounds(234, 226, 85, 20);
 		panelDados.add(txtDesconto);
 		txtDesconto.setColumns(10);
@@ -411,9 +399,7 @@ public class ViewVenda extends JInternalFrame {
 		return btnNovo;
 	}
 
-	public JButton getBtnVer() {
-		return btnVer;
-	}
+	
 
 	public JButton getBtnInserirItem() {
 		return btnInserirItem;

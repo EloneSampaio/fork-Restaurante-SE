@@ -15,5 +15,6 @@ public interface IOperacao extends JpaRepository<Operacao, Long>{
 	
 	@Query("SELECT sum(qtd) FROM Operacao where produto=:produto AND tipo=:tipo  ")
 	Integer buscaByTipo(@Param("produto") Produto produto, @Param("tipo")Integer tipo);
+	
 		
 }

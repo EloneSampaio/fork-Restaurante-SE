@@ -24,6 +24,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JToggleButton;
 import javax.swing.JEditorPane;
+import javax.swing.SwingConstants;
 
 public class ViewMesaPedido extends JInternalFrame {
 	/**
@@ -37,13 +38,14 @@ public class ViewMesaPedido extends JInternalFrame {
 	private JTable table;
 	private JButton btnAdicionar;
 	private JButton btnExluir;
-	private JLabel totalGeral;
 	private JButton btnCalcularTotal;
 	private JButton btnImprimir;
 	private JButton btnCancelar;
 	private JButton btnConfirmar;
 	private JLabel lblTotalGeral;
 	private JTextField txtTotal;
+	private JPanel panelPreco;
+	private JLabel totalGeral;
 
 
 
@@ -51,30 +53,21 @@ public class ViewMesaPedido extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public ViewMesaPedido(String mesa) {
+		setMaximizable(true);
 		setClosable(true);
 		setTitle("Mesas/Pedidos");
 		getContentPane().setBackground(new Color(0, 128, 128));
 		setIconifiable(true);
-		setBounds(200, 400, 1295, 740);
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{125, 66, 66, 66, 66, 181, 674, 0};
-		gridBagLayout.rowHeights = new int[]{38, 78, 42, 76, 449, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		getContentPane().setLayout(gridBagLayout);
+		setBounds(200, 400, 1388, 828);
+		getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBounds(0, 31, 372, 67);
 		panel.setBackground(new Color(0, 128, 128));
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.anchor = GridBagConstraints.SOUTH;
-		gbc_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_panel.gridwidth = 6;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 1;
-		getContentPane().add(panel, gbc_panel);
+		getContentPane().add(panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{138, 208, 0};
-		gbl_panel.rowHeights = new int[]{33, 30, 0};
+		gbl_panel.columnWidths = new int[]{186, 173, 0};
+		gbl_panel.rowHeights = new int[]{33, 0, 0};
 		gbl_panel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
@@ -83,15 +76,15 @@ public class ViewMesaPedido extends JInternalFrame {
 		lblMesa.setForeground(Color.WHITE);
 		lblMesa.setFont(new Font("Dialog", Font.BOLD, 27));
 		GridBagConstraints gbc_lblMesa = new GridBagConstraints();
-		gbc_lblMesa.anchor = GridBagConstraints.NORTH;
 		gbc_lblMesa.insets = new Insets(0, 0, 5, 0);
+		gbc_lblMesa.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblMesa.gridx = 1;
 		gbc_lblMesa.gridy = 0;
 		panel.add(lblMesa, gbc_lblMesa);
 		
 		JLabel lblItensDaMesa = new JLabel("Itens da Mesa");
 		GridBagConstraints gbc_lblItensDaMesa = new GridBagConstraints();
-		gbc_lblItensDaMesa.fill = GridBagConstraints.BOTH;
+		gbc_lblItensDaMesa.anchor = GridBagConstraints.WEST;
 		gbc_lblItensDaMesa.gridx = 1;
 		gbc_lblItensDaMesa.gridy = 1;
 		panel.add(lblItensDaMesa, gbc_lblItensDaMesa);
@@ -100,105 +93,107 @@ public class ViewMesaPedido extends JInternalFrame {
 		lblItensDaMesa.setBackground(Color.WHITE);
 		
 		panelCategoria = new JPanel();
+		panelCategoria.setBounds(592, 0, 776, 289);
 		panelCategoria.setBorder(new CompoundBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Categorias de Produto", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)), new MatteBorder(10, 12, 12, 10, (Color) new Color(122, 138, 153))));
 		panelCategoria.setBackground(new Color(255, 255, 255));
 		panelCategoria.setFont(new Font("Dialog", Font.BOLD, 27));
-		GridBagConstraints gbc_panelCategoria = new GridBagConstraints();
-		gbc_panelCategoria.fill = GridBagConstraints.BOTH;
-		gbc_panelCategoria.insets = new Insets(0, 0, 5, 0);
-		gbc_panelCategoria.gridheight = 3;
-		gbc_panelCategoria.gridx = 6;
-		gbc_panelCategoria.gridy = 1;
-		getContentPane().add(panelCategoria, gbc_panelCategoria);
-		GridBagLayout gbl_panelCategoria = new GridBagLayout();
-		gbl_panelCategoria.columnWidths = new int[]{0};
-		gbl_panelCategoria.rowHeights = new int[]{0};
-		gbl_panelCategoria.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_panelCategoria.rowWeights = new double[]{Double.MIN_VALUE};
-		panelCategoria.setLayout(gbl_panelCategoria);
+		getContentPane().add(panelCategoria);
+		panelCategoria.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		btnAdicionar = new JButton("");
-		btnAdicionar.setToolTipText("Adicionar quantidade");
-		btnAdicionar.setActionCommand("adicionar");
-		btnAdicionar.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/plus.png")));
-		GridBagConstraints gbc_btnAdicionar = new GridBagConstraints();
-		gbc_btnAdicionar.anchor = GridBagConstraints.NORTHEAST;
-		gbc_btnAdicionar.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAdicionar.gridx = 0;
-		gbc_btnAdicionar.gridy = 2;
-		getContentPane().add(btnAdicionar, gbc_btnAdicionar);
+		JPanel panelBtn = new JPanel();
+		panelBtn.setBounds(83, 103, 421, 42);
+		getContentPane().add(panelBtn);
+		GridBagLayout gbl_panelBtn = new GridBagLayout();
+		gbl_panelBtn.columnWidths = new int[]{66, 66, 66, 66, 66, 66, 0};
+		gbl_panelBtn.rowHeights = new int[]{42, 0};
+		gbl_panelBtn.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelBtn.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panelBtn.setLayout(gbl_panelBtn);
 		
-		btnExluir = new JButton("");
-		btnExluir.setToolTipText("Excluir Item");
-		btnExluir.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/minus white.png")));
-		btnExluir.setActionCommand("excluir");
-		GridBagConstraints gbc_btnExluir = new GridBagConstraints();
-		gbc_btnExluir.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnExluir.insets = new Insets(0, 0, 5, 5);
-		gbc_btnExluir.gridx = 1;
-		gbc_btnExluir.gridy = 2;
-		getContentPane().add(btnExluir, gbc_btnExluir);
+		btnCancelar = new JButton("");
+		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
+		gbc_btnCancelar.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnCancelar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCancelar.gridx = 0;
+		gbc_btnCancelar.gridy = 0;
+		panelBtn.add(btnCancelar, gbc_btnCancelar);
+		btnCancelar.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/stop.png")));
+		btnCancelar.setToolTipText("Cancelar");
+		btnCancelar.setActionCommand("cancelar");
+		
+		btnImprimir = new JButton("");
+		GridBagConstraints gbc_btnImprimir = new GridBagConstraints();
+		gbc_btnImprimir.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnImprimir.insets = new Insets(0, 0, 0, 5);
+		gbc_btnImprimir.gridx = 1;
+		gbc_btnImprimir.gridy = 0;
+		panelBtn.add(btnImprimir, gbc_btnImprimir);
+		btnImprimir.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/print.png")));
+		btnImprimir.setToolTipText("Imprimir");
+		btnImprimir.setActionCommand("imprimir");
+		
+		btnConfirmar = new JButton("");
+		GridBagConstraints gbc_btnConfirmar = new GridBagConstraints();
+		gbc_btnConfirmar.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnConfirmar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnConfirmar.gridx = 2;
+		gbc_btnConfirmar.gridy = 0;
+		panelBtn.add(btnConfirmar, gbc_btnConfirmar);
+		btnConfirmar.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/refresh.png")));
+		btnConfirmar.setToolTipText("Processar Pedido");
+		btnConfirmar.setActionCommand("confirmar");
 		
 		btnCalcularTotal = new JButton("");
+		GridBagConstraints gbc_btnCalcularTotal = new GridBagConstraints();
+		gbc_btnCalcularTotal.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnCalcularTotal.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCalcularTotal.gridx = 3;
+		gbc_btnCalcularTotal.gridy = 0;
+		panelBtn.add(btnCalcularTotal, gbc_btnCalcularTotal);
 		btnCalcularTotal.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/calculator.png")));
 		btnCalcularTotal.setToolTipText("Calcular Total");
 		btnCalcularTotal.setActionCommand("excluir");
 		btnCalcularTotal.setActionCommand("calcular");
-		GridBagConstraints gbc_btnCalcularTotal = new GridBagConstraints();
-		gbc_btnCalcularTotal.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnCalcularTotal.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCalcularTotal.gridx = 2;
-		gbc_btnCalcularTotal.gridy = 2;
-		getContentPane().add(btnCalcularTotal, gbc_btnCalcularTotal);
 		
-		btnConfirmar = new JButton("");
-		btnConfirmar.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/refresh.png")));
-		btnConfirmar.setToolTipText("Processar Pedido");
-		btnConfirmar.setActionCommand("confirmar");
-		GridBagConstraints gbc_btnConfirmar = new GridBagConstraints();
-		gbc_btnConfirmar.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnConfirmar.insets = new Insets(0, 0, 5, 5);
-		gbc_btnConfirmar.gridx = 3;
-		gbc_btnConfirmar.gridy = 2;
-		getContentPane().add(btnConfirmar, gbc_btnConfirmar);
+		btnExluir = new JButton("");
+		GridBagConstraints gbc_btnExluir = new GridBagConstraints();
+		gbc_btnExluir.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnExluir.insets = new Insets(0, 0, 0, 5);
+		gbc_btnExluir.gridx = 4;
+		gbc_btnExluir.gridy = 0;
+		panelBtn.add(btnExluir, gbc_btnExluir);
+		btnExluir.setToolTipText("Excluir Item");
+		btnExluir.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/minus white.png")));
+		btnExluir.setActionCommand("excluir");
 		
-		btnImprimir = new JButton("");
-		btnImprimir.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/print.png")));
-		btnImprimir.setToolTipText("Imprimir");
-		btnImprimir.setActionCommand("imprimir");
-		GridBagConstraints gbc_btnImprimir = new GridBagConstraints();
-		gbc_btnImprimir.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnImprimir.insets = new Insets(0, 0, 5, 5);
-		gbc_btnImprimir.gridx = 4;
-		gbc_btnImprimir.gridy = 2;
-		getContentPane().add(btnImprimir, gbc_btnImprimir);
-		
-		btnCancelar = new JButton("");
-		btnCancelar.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/stop.png")));
-		btnCancelar.setToolTipText("Cancelar");
-		btnCancelar.setActionCommand("cancelar");
-		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
-		gbc_btnCancelar.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnCancelar.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCancelar.gridx = 5;
-		gbc_btnCancelar.gridy = 2;
-		getContentPane().add(btnCancelar, gbc_btnCancelar);
+		btnAdicionar = new JButton("");
+		GridBagConstraints gbc_btnAdicionar = new GridBagConstraints();
+		gbc_btnAdicionar.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnAdicionar.gridx = 5;
+		gbc_btnAdicionar.gridy = 0;
+		panelBtn.add(btnAdicionar, gbc_btnAdicionar);
+		btnAdicionar.setToolTipText("Adicionar quantidade");
+		btnAdicionar.setActionCommand("adicionar");
+		btnAdicionar.setIcon(new ImageIcon(ViewMesaPedido.class.getResource("/img/PNG/plus.png")));
 		
 		panelPedidos = new JPanel();
+		panelPedidos.setBounds(0, 150, 587, 606);
 		panelPedidos.setBackground(new Color(0, 128, 128));
-		GridBagConstraints gbc_panelPedidos = new GridBagConstraints();
-		gbc_panelPedidos.fill = GridBagConstraints.BOTH;
-		gbc_panelPedidos.insets = new Insets(0, 0, 0, 5);
-		gbc_panelPedidos.gridheight = 2;
-		gbc_panelPedidos.gridwidth = 6;
-		gbc_panelPedidos.gridx = 0;
-		gbc_panelPedidos.gridy = 3;
-		getContentPane().add(panelPedidos, gbc_panelPedidos);
-		panelPedidos.setLayout(null);
+		getContentPane().add(panelPedidos);
+		GridBagLayout gbl_panelPedidos = new GridBagLayout();
+		gbl_panelPedidos.columnWidths = new int[]{587, 0};
+		gbl_panelPedidos.rowHeights = new int[]{335, 67, 162, 0};
+		gbl_panelPedidos.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panelPedidos.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panelPedidos.setLayout(gbl_panelPedidos);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 12, 587, 340);
-		panelPedidos.add(scrollPane);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 0;
+		panelPedidos.add(scrollPane, gbc_scrollPane);
 		
 		table = new JTable();
 		table.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -212,36 +207,65 @@ public class ViewMesaPedido extends JInternalFrame {
 		));
 		scrollPane.setViewportView(table);
 		
-		lblTotalGeral = new JLabel("Total Geral=");
+		panelPreco = new JPanel();
+		panelPreco.setForeground(new Color(0, 128, 128));
+		panelPreco.setBorder(new CompoundBorder(new MatteBorder(10, 15, 19, 12, (Color) new Color(0, 128, 128)), new CompoundBorder(new MatteBorder(12, 14, 12, 10, (Color) new Color(0, 128, 128)), new MatteBorder(11, 15, 10, 16, (Color) new Color(0, 128, 128)))));
+		GridBagLayout gbl_panelPreco = new GridBagLayout();
+		gbl_panelPreco.columnWidths = new int[]{67, 165, 172, 0};
+		gbl_panelPreco.rowHeights = new int[]{38, 36, 0};
+		gbl_panelPreco.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelPreco.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		panelPreco.setLayout(gbl_panelPreco);
+		
+		lblTotalGeral = new JLabel("Total Geral =");
+		lblTotalGeral.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTotalGeral.setVisible(false);
 		
-		lblTotalGeral.setForeground(new Color(255, 255, 255));
+		lblTotalGeral.setForeground(new Color(0, 0, 0));
 		lblTotalGeral.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblTotalGeral.setBounds(270, 364, 156, 25);
-		panelPedidos.add(lblTotalGeral);
+		GridBagConstraints gbc_lblTotalGeral_11 = new GridBagConstraints();
+		gbc_lblTotalGeral_11.anchor = GridBagConstraints.NORTH;
+		gbc_lblTotalGeral_11.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblTotalGeral_11.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTotalGeral_11.gridx = 1;
+		gbc_lblTotalGeral_11.gridy = 1;
+		panelPreco.add(lblTotalGeral, gbc_lblTotalGeral_11);
 		
-		 totalGeral = new JLabel("");
-		 totalGeral.setForeground(new Color(255, 255, 255));
-		 totalGeral.setFont(new Font("Dialog", Font.BOLD, 19));
-		 totalGeral.setBounds(426, 368, 149, 21);
-		 panelPedidos.add(totalGeral);
-		 
-		 txtTotal = new JTextField();
-		 
-		 JEditorPane dtrpnAvisos = new JEditorPane();
-		 dtrpnAvisos.setFont(new Font("Dialog", Font.BOLD, 16));
-		 dtrpnAvisos.setText("Adicionar Item(F1)  Excluir Item(F2)   Calcular Preço(F10)  \n\nFechar Mesa(F5)   Imprimir Factura(F11) Cancelar Pedido(F9)\n");
-		 dtrpnAvisos.setBounds(12, 419, 557, 111);
-		 panelPedidos.add(dtrpnAvisos);
+		totalGeral = new JLabel("");
+		totalGeral.setForeground(new Color(0, 0, 0));
+		totalGeral.setFont(new Font("Dialog", Font.BOLD, 20));
+		GridBagConstraints gbc_totalGeral_1 = new GridBagConstraints();
+		gbc_totalGeral_1.fill = GridBagConstraints.BOTH;
+		gbc_totalGeral_1.gridx = 2;
+		gbc_totalGeral_1.gridy = 1;
+		panelPreco.add(totalGeral, gbc_totalGeral_1);
+		//panelPedidos.add(totalGeral, gbc_totalGeral);
+		
+		GridBagConstraints gbc_panelPreco = new GridBagConstraints();
+		gbc_panelPreco.fill = GridBagConstraints.VERTICAL;
+		gbc_panelPreco.gridx = 0;
+		gbc_panelPreco.gridy = 2;
+		panelPedidos.add(panelPreco, gbc_panelPreco);
 		
 		panelProduto = new JPanel();
+		panelProduto.setBounds(592, 294, 776, 462);
 		panelProduto.setBorder(new CompoundBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Produtos", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, new Color(51, 51, 51)), new MatteBorder(10, 12, 12, 10, (Color) new Color(122, 138, 153))));
 		panelProduto.setBackground(Color.WHITE);
-		GridBagConstraints gbc_panelProduto = new GridBagConstraints();
-		gbc_panelProduto.fill = GridBagConstraints.BOTH;
-		gbc_panelProduto.gridx = 6;
-		gbc_panelProduto.gridy = 4;
-		getContentPane().add(panelProduto, gbc_panelProduto);
+		getContentPane().add(panelProduto);
+		panelProduto.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		GridBagConstraints gbc_lblTotalGeral_1 = new GridBagConstraints();
+		gbc_lblTotalGeral_1.anchor = GridBagConstraints.EAST;
+		gbc_lblTotalGeral_1.fill = GridBagConstraints.VERTICAL;
+		gbc_lblTotalGeral_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTotalGeral_1.gridx = 0;
+		gbc_lblTotalGeral_1.gridy = 3;
+		 GridBagConstraints gbc_totalGeral_11 = new GridBagConstraints();
+		 gbc_totalGeral_11.insets = new Insets(6, 0, 5, 5);
+		 gbc_totalGeral_11.fill = GridBagConstraints.BOTH;
+		 gbc_totalGeral_11.gridx = 2;
+		 gbc_totalGeral_11.gridy = 3;
+		 
+		 txtTotal = new JTextField();
 
 	}
 

@@ -63,11 +63,11 @@ public class ContaAReceberController {
 		int aPagar = 0;
 		int divida = 0;
 		try {
-			pago = (dao.buscarContaPagas(Status.PAGO)) == null ? 0 : dao.buscarContaPagas(Status.PAGO);
-			aPagar = dao.buscarConta(Status.PROCESSANDO, Calendar.getInstance()) == null ? 0
-					: dao.buscarConta(Status.PROCESSANDO, Calendar.getInstance());
-			divida = dao.buscarContaVencida(Calendar.getInstance(), Status.PAGO) == null ? 0
-					: dao.buscarContaVencida(Calendar.getInstance(), Status.PAGO);
+			pago = (dao.buscarContaPagas(Status.PAGO,1)) == null ? 0 : dao.buscarContaPagas(Status.PAGO,1);
+			aPagar = dao.buscarConta(Status.PROCESSANDO, Calendar.getInstance(),1) == null ? 0
+					: dao.buscarConta(Status.PROCESSANDO, Calendar.getInstance(),1);
+			divida = dao.buscarContaVencida(Calendar.getInstance(), Status.PAGO,1) == null ? 0
+					: dao.buscarContaVencida(Calendar.getInstance(), Status.PAGO,1);
 			if (!(pago == 0)) {
 				gui.getLblValorpago().setText(String.valueOf(pago) + " KZ");
 			} else {
@@ -91,7 +91,6 @@ public class ContaAReceberController {
 
 	public void initializeTable() {
 		ArrayList linha = new ArrayList();
-
 		for (ContaPagamento dados : dao.findByTipo(1)) {
 
 			Object object = new Object[] { dados.getId(), dados.getDescricao(),
@@ -101,7 +100,7 @@ public class ContaAReceberController {
 			linha.add(object);
 		}
 
-		String[] colunas = new String[] { "COD", "Descrição", "Data de Vencimento", "Situação" };
+		String[] colunas = new String[] { "COD", "Descrição", "Data de recebimento", "Situação" };
 		tabela = new TableModelPersonalizado(linha, colunas);
 		gui.getTable().setModel(tabela);
 		gui.getTable().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -223,7 +222,7 @@ public class ContaAReceberController {
 		}
 		alerta("Removido");
 		initializeTable();
-		
+
 	}
 
 	public void preencherCampos(ContaPagamento conta) {

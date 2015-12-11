@@ -1,8 +1,10 @@
 package com.forksystem.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,7 +16,8 @@ public class Cidades {
 	@GeneratedValue
 	Long id;
 	private String nome;
-	private String sigla;
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Provincias provincia;
 	public Long getId() {
 		return id;
 	}
@@ -27,12 +30,17 @@ public class Cidades {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getSigla() {
-		return sigla;
+	public Provincias getProvincia() {
+		return provincia;
 	}
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
+	public void setProvincia(Provincias provincia) {
+		this.provincia = provincia;
 	}
+	@Override
+	public String toString() {
+		return  nome;
+	}
+
 	
 	
 	

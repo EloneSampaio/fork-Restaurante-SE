@@ -43,17 +43,17 @@ public class ViewCategoria extends JInternalFrame {
 		setTitle("Cadastro/Categoria");
 		setClosable(true);
 		setIconifiable(true);
-		setBounds(100, 100, 779, 409);
+		setBounds(100, 100, 917, 497);
 		getContentPane().setLayout(null);
 		
 		panel = new JPanel();
-		panel.setBackground(new Color(102, 153, 153));
-		panel.setBounds(0, 0, 769, 296);
+		panel.setBackground(new Color(0, 128, 128));
+		panel.setBounds(0, 0, 907, 397);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 6, 485, 205);
+		scrollPane.setBounds(6, 6, 651, 301);
 		panel.add(scrollPane);
 		
 		table = new JTable();
@@ -61,18 +61,18 @@ public class ViewCategoria extends JInternalFrame {
 		
 		textNome = new JTextField();
 		textNome.setColumns(10);
-		textNome.setBounds(93, 235, 156, 19);
+		textNome.setBounds(145, 329, 156, 19);
 		panel.add(textNome);
 		
 		textDescricao = new JTextField();
 		textDescricao.setColumns(10);
-		textDescricao.setBounds(355, 235, 170, 19);
+		textDescricao.setBounds(407, 329, 170, 19);
 		panel.add(textDescricao);
 		
 		lblDescrio = new JLabel("Descrição");
 		lblDescrio.setForeground(new Color(255, 255, 255));
 		lblDescrio.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblDescrio.setBounds(267, 235, 87, 15);
+		lblDescrio.setBounds(319, 329, 87, 15);
 		panel.add(lblDescrio);
 		
 		JButton btnEscolhaAImagem = new JButton("Escolha a Imagem");
@@ -92,29 +92,29 @@ public class ViewCategoria extends JInternalFrame {
 
 			}
 		});
-		btnEscolhaAImagem.setBounds(571, 223, 145, 35);
+		btnEscolhaAImagem.setBounds(706, 252, 145, 35);
 		panel.add(btnEscolhaAImagem);
 		
 		lblImagem = new JLabel("");
-		lblImagem.setBounds(500, 12, 257, 170);
+		lblImagem.setBounds(665, 11, 230, 198);
 		panel.add(lblImagem);
 		
 		txtImagem = new JTextField();
 		txtImagem.setEnabled(false);
 		txtImagem.setEditable(false);
 		txtImagem.setVisible(false);
-		txtImagem.setBounds(584, 192, 78, 19);
+		txtImagem.setBounds(739, 221, 78, 19);
 		panel.add(txtImagem);
 		txtImagem.setColumns(10);
 		
 		label = new JLabel("Nome");
 		label.setForeground(new Color(255, 255, 255));
-		label.setBounds(12, 237, 70, 15);
+		label.setBounds(64, 331, 70, 15);
 		panel.add(label);
 		label.setFont(new Font("Dialog", Font.BOLD, 14));
 		textId=new JTextField();
 		baseToolBar = new BaseToolBar();
-		baseToolBar.setBounds(0, 310, 769, 67);
+		baseToolBar.setBounds(0, 400, 907, 67);
 		getContentPane().add(baseToolBar);
 
 	}

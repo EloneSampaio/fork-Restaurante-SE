@@ -20,11 +20,17 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.alee.log.Log;
+import com.forksystem.dao.ICidades;
 import com.forksystem.dao.IPessoa;
+import com.forksystem.dao.IProvincia;
+import com.forksystem.entities.Categoria;
+import com.forksystem.entities.Cidades;
 import com.forksystem.entities.Cliente;
 import com.forksystem.entities.Contacto;
 import com.forksystem.entities.Endereco;
+import com.forksystem.entities.Provincias;
 import com.forksystem.models.CellRenderer;
+import com.forksystem.models.ComboBoxModelPersonalizado;
 import com.forksystem.models.HeaderCellRenderer;
 import com.forksystem.models.TableModelPersonalizado;
 import com.forksystem.ui.ViewCliente;
@@ -35,10 +41,16 @@ public class ClienteController {
 
 	public ViewCliente gui;
 	private IPessoa dao;
+	private IProvincia estado = null;
+	private ICidades cidadeDao = null;
 	public TableModelPersonalizado tabela;
 	public java.util.Vector<String> dados = new java.util.Vector<String>();
 	Boolean control = false;
 	TableRowSorter<TableModel> sorter = null;
+	ArrayList<Provincias> provincia = new ArrayList<Provincias>();
+	final ArrayList<Cidades> cidade = new ArrayList<Cidades>();
+	ComboBoxModelPersonalizado modelProvincia = new ComboBoxModelPersonalizado(provincia);
+	ComboBoxModelPersonalizado modelCidade = new ComboBoxModelPersonalizado(cidade);
 
 	public ClienteController() {
 
@@ -49,6 +61,26 @@ public class ClienteController {
 		gui.getTabelaDeClientes().addMouseListener((new OuvirCliente()));
 		personalizarTabela();
 		disableAllBtn(false);
+		preencherCombo();
+
+	}
+
+	public void preencherCombo() {
+		cidadeDao = Context.getInstace().getContexto().getBean(ICidades.class);
+		estado = Context.getInstace().getContexto().getBean(IProvincia.class);
+
+		provincia.addAll((estado.findAll()));
+		gui.getCmbEstado().setModel(modelProvincia);
+
+		gui.getCmbEstado().addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				cidade.clear();
+				cidade.addAll(cidadeDao.findByProvincia((Provincias) gui.getCmbEstado().getSelectedItem()));
+				gui.getCmbCidade().setModel(modelCidade);
+
+			}
+		});
 
 	}
 
@@ -58,7 +90,7 @@ public class ClienteController {
 		Endereco endereco = new Endereco();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-        Date data=(Date) gui.getTxtData().getValue();
+		Date data = (Date) gui.getTxtData().getValue();
 		Contacto contacto = new Contacto();
 		contacto.setEmail(gui.getTextEmail().getText());
 		contacto.setTelefone(gui.getTextTelefone().getText());
@@ -73,17 +105,12 @@ public class ClienteController {
 		cliente.setCpf(gui.getTextCpf().getText());
 		cliente.setData((new Utilitario().converterData(sdf.format(data))));
 		cliente.setDesde(Calendar.getInstance());
-		cliente.setEmpresa(gui.getTxtEmpresa().getText());
-		cliente.setFoneEmpresa(gui.getTxtTelefoneempresa().getText());
-		cliente.setFone_referencia_cliente(gui.getTxtTelefonecliente().getText());
-		cliente.setProfissao(gui.getTxtProfissoa().getText());
-		cliente.setRendaCLiente(gui.getTxtRenda().getText());
-		
+		cliente.setProvincia((Provincias) gui.getCmbEstado().getSelectedItem());
+		cliente.setCidade((Cidades) gui.getCmbCidade().getSelectedItem());
 
 		if (!gui.getTextCodigo().getText().isEmpty()) {
 			Long id = Long.parseLong(gui.getTextCodigo().getText());
 			cliente.setId(id);
-			
 
 		}
 		if (gui.getRdbtnFemenino().isSelected()) {
@@ -95,18 +122,17 @@ public class ClienteController {
 		cliente.setSexo(genero);
 
 		try {
-			 dao.saveAndFlush(cliente);
-			gui.getTextCodigo().setText(null);	
+			dao.saveAndFlush(cliente);
+			gui.getTextCodigo().setText(null);
 			cliente.setId(null);
-			 alerta("Operaão realizada");
-				initializeTable();
-				
+			alerta("Operaão realizada");
+			initializeTable();
 
 		} catch (Exception e) {
 			alerta("Erro ao fazer cadastro");
-			
+
 			Log.error(e.getMessage());
-			}
+		}
 
 	}
 
@@ -125,7 +151,7 @@ public class ClienteController {
 		gui.getTextCodigo().setText(Long.toString(cliente.getId()));
 		gui.getTxtNome().setText(cliente.getNome());
 		gui.getTextCpf().setText(cliente.getCpf());
-		
+
 		if (cliente.getSexo().equals("Masculino")) {
 			gui.getRdbtnMasculino().setText(cliente.getSexo());
 			gui.getRdbtnMasculino().setSelected(true);
@@ -133,57 +159,58 @@ public class ClienteController {
 			gui.getRdbtnFemenino().setText(cliente.getSexo());
 			gui.getRdbtnFemenino().setSelected(true);
 		}
-		
+
 		else if (cliente.getSexo().equals("Outro")) {
 			gui.getRdbtnOutro().setText(cliente.getSexo());
 			gui.getRdbtnOutro().setSelected(true);
 		}
 
+		if (null != cliente.getProvincia()) {
+			gui.getCmbEstado().setSelectedItem(cliente.getProvincia());
+		}
+
+		if (null != cliente.getCidade()) {
+			gui.getCmbCidade().setSelectedItem(cliente.getCidade());
+		}
+
 		gui.getTxtData().setValue(new Utilitario().formatarData(cliente.getData().getTime(), false));
 		gui.getCmbEstado().setSelectedItem(cliente.getEndereco().getCidade());
-        gui.getTxtEmpresa().setText(cliente.getEmpresa().toString());
-        gui.getTxtProfissoa().setText(cliente.getProfissao().toString());
-        gui.getTxtRenda().setText(cliente.getRendaCLiente().toString());
-        gui.getTxtTelefonecliente().setText(cliente.getFone_referencia_cliente().toString());
-        gui.getTxtTelefoneempresa().setText(cliente.getFoneEmpresa().toString());
-        
 
-        gui.getTextBairro().setText(cliente.getEndereco().getBairro());
+		gui.getTextBairro().setText(cliente.getEndereco().getBairro());
 		gui.getTextEndreco().setText(cliente.getEndereco().getEndereco());
-		
-		if(!cliente.getContacto().getEmail().isEmpty()){
-			
-        gui.getTextEmail().setText(cliente.getContacto().getEmail());
+
+		if (!cliente.getContacto().getEmail().isEmpty()) {
+
+			gui.getTextEmail().setText(cliente.getContacto().getEmail());
 		}
-		if(!cliente.getContacto().getTelefone().isEmpty()){
-		gui.getTextTelefone().setText(cliente.getContacto().getTelefone());
+		if (!cliente.getContacto().getTelefone().isEmpty()) {
+			gui.getTextTelefone().setText(cliente.getContacto().getTelefone());
 		}
-		
-		}
+
+	}
 
 	public void initializeTable() {
 		ArrayList linha = new ArrayList();
 
 		for (Cliente dados : dao.findAllClientes()) {
 			Object object = new Object[] { dados.getId(), dados.getNome(), dados.getSexo(),
-					new Utilitario().verificaIdade(dados.getData().getTime()), dados.getCpf(),dados.getContacto().getTelefone() };
+					new Utilitario().verificaIdade(dados.getData().getTime()), dados.getCpf(),
+					dados.getContacto().getTelefone() };
 			linha.add(object);
-			  
-				
+
 		}
 
-		String[] colunas = new String[] { "COD", "NOME", "GENERO", "IDADE", "CPF","TELEFONE" };
+		String[] colunas = new String[] { "COD", "NOME", "GENERO", "IDADE", "BI/DOC", "TELEFONE" };
 		tabela = new TableModelPersonalizado(linha, colunas);
 		gui.getTabelaDeClientes().setModel(tabela);
 		gui.getTabelaDeClientes().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-         sorter = new TableRowSorter<TableModel>(tabela);
+		sorter = new TableRowSorter<TableModel>(tabela);
 		gui.getTabelaDeClientes().setRowSorter(sorter);
 		gui.getTxtPesquisar().addCaretListener(new CaretListener() {
 
 			public void caretUpdate(CaretEvent e) {
 				String valor = gui.getTxtPesquisar().getText().trim();
 				sorter.setRowFilter(RowFilter.regexFilter("(?i)" + valor, 4));
-				
 
 			}
 		});
@@ -260,18 +287,17 @@ public class ClienteController {
 		gui.getTabelaDeClientes().setGridColor(new Color(221, 221, 221));
 
 		gui.getTabelaDeClientes().setDefaultRenderer(Object.class, new CellRenderer());
-		
-		
+
 	}
 
-	public void limparTodos(){
+	public void limparTodos() {
 		new Utilitario(gui.getPanelCadastro()).limparTodos();
 		new Utilitario(gui.getPanelContacto()).limparTodos();
 		new Utilitario(gui.getPanelEndereco()).limparTodos();
-		new Utilitario(gui.getPanelEmpresas()).limparTodos();
+		
 
 	}
-	
+
 	public class OuvirCliente implements ActionListener, MouseListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -284,7 +310,7 @@ public class ClienteController {
 				dados.add("novo");
 				limparTodos();
 				disableOrenableBtnToEdit(false);
-				
+
 			} else if (e.getActionCommand() == "guardar") {
 				if (new Utilitario(gui.getPanelCadastro()).verificarCampos()) {
 					alerta("preencha os campos");
@@ -324,8 +350,7 @@ public class ClienteController {
 				dados.add("apagar");
 				dados.add("novo");
 				disableOrenableBtnToEdit(false);
-			}
-			else if (e.getActionCommand() == "cancelar") {
+			} else if (e.getActionCommand() == "cancelar") {
 				dados.add("novo");
 				disableOrenableBtnToEdit(false);
 				limparTodos();
@@ -335,8 +360,7 @@ public class ClienteController {
 
 		public void mouseClicked(MouseEvent e) {
 
-			Long cliente = (Long) gui.getTabelaDeClientes()
-					.getValueAt(gui.getTabelaDeClientes().getSelectedRow(), 0);
+			Long cliente = (Long) gui.getTabelaDeClientes().getValueAt(gui.getTabelaDeClientes().getSelectedRow(), 0);
 
 			preencherCampos(dao.findByCliente(cliente));
 			dados.add("editar");

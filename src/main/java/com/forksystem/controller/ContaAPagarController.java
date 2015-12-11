@@ -62,11 +62,11 @@ public class ContaAPagarController {
 		int aPagar = 0;
 		int divida = 0;
 		try {
-			pago = (dao.buscarContaPagas(Status.PAGO)) == null ? 0 : dao.buscarContaPagas(Status.PAGO);
-			aPagar = dao.buscarConta(Status.PROCESSANDO, Calendar.getInstance()) == null ? 0
-					: dao.buscarConta(Status.PROCESSANDO, Calendar.getInstance());
-			divida = dao.buscarContaVencida(Calendar.getInstance(), Status.PAGO) == null ? 0
-					: dao.buscarContaVencida(Calendar.getInstance(), Status.PAGO);
+			pago = (dao.buscarContaPagas(Status.PAGO,0)) == null ? 0 : dao.buscarContaPagas(Status.PAGO,0);
+			aPagar = dao.buscarConta(Status.PROCESSANDO, Calendar.getInstance(),0) == null ? 0
+					: dao.buscarConta(Status.PROCESSANDO, Calendar.getInstance(),0);
+			divida = dao.buscarContaVencida(Calendar.getInstance(), Status.PAGO,0) == null ? 0
+					: dao.buscarContaVencida(Calendar.getInstance(), Status.PAGO,0);
 			if (!(pago == 0)) {
 				gui.getLblValorpago().setText(String.valueOf(pago) + " KZ");
 			} else {
@@ -195,7 +195,7 @@ public class ContaAPagarController {
 			if (null != getId()) {
 				conta.setId(getId());
 			}
-
+			
 			dao.saveAndFlush(conta);
 			setId(null);
 			alerta("Operação realizada");

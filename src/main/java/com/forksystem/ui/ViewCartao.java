@@ -57,8 +57,8 @@ public class ViewCartao extends JInternalFrame {
 		getContentPane().setLayout(null);
 		
 		panel = new JPanel();
-		panel.setForeground(new Color(102, 153, 153));
-		panel.setBackground(new Color(102, 153, 153));
+		panel.setForeground(new Color(0, 128, 128));
+		panel.setBackground(new Color(0, 128, 128));
 		panel.setBounds(0, 0, 642, 381);
 		getContentPane().add(panel);
 		panel.setLayout(null);

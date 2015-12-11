@@ -1,40 +1,43 @@
 package com.forksystem.ui;
 
-import java.awt.Component;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.util.Properties;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
+import com.forksystem.controller.CategoriaController;
+import com.forksystem.controller.ClienteController;
+import com.forksystem.controller.ContaAPagarController;
+import com.forksystem.controller.ContaAReceberController;
 import com.forksystem.controller.ContaController;
-import com.forksystem.controller.DepartamentoController;
 import com.forksystem.controller.EstoqueController;
 import com.forksystem.controller.FornecedorController;
 import com.forksystem.controller.FuncionarioController;
 import com.forksystem.controller.MarcaController;
-import com.forksystem.controller.MenuBaixoController;
 import com.forksystem.controller.MesaController;
 import com.forksystem.controller.OrcamentoController;
-import com.forksystem.controller.PlanoDeContaController;
 import com.forksystem.controller.ProdutoController;
-import com.forksystem.controller.TipoPagamentoController;
 import com.forksystem.controller.UnidadeController;
 import com.forksystem.controller.VendaController;
-import com.forksystem.controller.CartaoController;
-import com.forksystem.controller.CategoriaController;
-import com.forksystem.controller.ClienteController;
-import com.forksystem.controller.ContaAPagarController;
+import com.forksystem.utils.Config;
+import com.forksystem.utils.ConverterDataHora;
 
 public final class ViewPrincipal extends JFrame {
 
@@ -44,51 +47,56 @@ public final class ViewPrincipal extends JFrame {
 	private FuncionarioController funcionario = null;
 	private CategoriaController categoria = null;
 	private ContaController conta = null;
-	private CartaoController cartao = null;
-	private TipoPagamentoController tipoPGT = null;
 	private MarcaController marca = null;
 	private UnidadeController unidade = null;
 	private ProdutoController produto = null;
-	private FornecedorController fornecdor = null;
-	private DepartamentoController departamento = null;
-	private PlanoDeContaController plano = null;
+	private FornecedorController fornecedor = null;
 	private VendaController venda = null;
 	private OrcamentoController orcamento = null;
 	private EstoqueController estoque = null;
 	private MesaController mesa = null;
-	private ViewMenuBaixo menuBaixo=null;
-    private ContaAPagarController contaPaga=null;
-	/**
-	 * Launch the application. //
-	 */
-	// public static void main(String[] args) {
-	// EventQueue.invokeLater(new Runnable() {
-	// public void run() {
-	// try {
-	//// for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-	//// if ("Nimbus".equals(info.getName())) {
-	//// UIManager.setLookAndFeel(info.getClassName());
-	//// break;
-	//// }
-	//// }
-	// UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
-	//
-	//
-	// UIManager.setLookAndFeel(new SyntheticaStandardLookAndFeel());
-	//
-	// ViewPrincipal frame = new ViewPrincipal();
-	// frame.setVisible(true);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// });
-	// }
+	private ViewMenuBaixo menuBaixo = null;
+	private ContaAPagarController contaPaga = null;
+	private ContaAReceberController contaReceber = null;
+	private ViewImportProduto produtoImport = null;
+	private static Image img;
+	private ConverterDataHora da;
+	private JLabel lblData;
+	private JLabel lblHora;
+	private JLabel lblSejaBemVindo;
+	private ViewAlteraFundo fundo = null;;
+	private ViewAjuda ajuda = null;
+	private ViewAlteraTema tema = null;
 
 	/**
 	 * Create the frame.
 	 */
 	public ViewPrincipal() {
+		Properties prop = Config.getPropriedade();
+		setTitle(prop.getProperty("prop.btn.Titulo"));
+		setLayout(new BorderLayout());
+		da = new ConverterDataHora();
+		setBounds(100, 100, 755, 169);
+
+		javax.swing.Timer time = new javax.swing.Timer(1000, new verRelogio());
+		time.setRepeats(true);
+		time.setInitialDelay(0);
+		time.start();
+
+		lblData = new JLabel();
+		lblData.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblData.setForeground(Color.BLACK);
+		lblData.setBounds(1200, 92, 2000, 1200);
+
+		lblHora = new JLabel();
+		lblHora.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblHora.setForeground(Color.BLACK);
+		lblHora.setBounds(1200, 120, 2000, 1250);
+
+		lblSejaBemVindo = new JLabel("Seja Bem Vindo");
+		lblSejaBemVindo.setForeground(new Color(255, 255, 255));
+		lblSejaBemVindo.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblSejaBemVindo.setBounds(250, 12, 210, 28);
 
 		// difinindo tamanho da tela
 		int inset = 25;
@@ -96,52 +104,50 @@ public final class ViewPrincipal extends JFrame {
 		setBounds(inset, inset, screenSize.width - inset * 1, screenSize.height - inset * 3);
 		/////////////////////////////////////////////////////////////////////////
 
-		setPainelDesktop(new JDesktopPane());
-		// painelDesktop.setDesktopManager(new
-		// de.javasoft.plaf.synthetica.SyntheticaDesktopManager());
-
+		setPainelDesktop(new DecorateJdesktopPanel(prop.getProperty("prop.btn.Fundo")));
+		getPainelDesktop().add(lblData, BorderLayout.EAST);
+		getPainelDesktop().add(lblHora, BorderLayout.EAST);
+		painelDesktop.setDesktopManager(new de.javasoft.plaf.synthetica.SyntheticaDesktopManager());
 		setContentPane(getPainelDesktop());
 		ViewMenuBaixo menuBaixo = new ViewMenuBaixo();
+		menuBaixo.setLocation(new Point(300, 100));
 		menuBaixo.setVisible(true);
 
-		// remover drag and drop dos jInternalFrame
-		BasicInternalFrameUI ui = (BasicInternalFrameUI) menuBaixo.getUI();
-		Component noth = ui.getNorthPane();
-		MouseMotionListener[] actions = (MouseMotionListener[]) noth.getListeners(MouseMotionListener.class);
-		for (int i = 0; i < actions.length; i++) {
-			noth.removeMouseMotionListener(actions[i]);
-
-		}
-		setLocationRelativeTo(null);
+		// // remover drag and drop dos jInternalFrame
+		// BasicInternalFrameUI ui = (BasicInternalFrameUI) menuBaixo.getUI();
+		// Component noth = ui.getNorthPane();
+		// MouseMotionListener[] actions = (MouseMotionListener[])
+		// noth.getListeners(MouseMotionListener.class);
+		// for (int i = 0; i < actions.length; i++) {
+		// noth.removeMouseMotionListener(actions[i]);
+		//
+		// }
+		// setLocationRelativeTo(null);
 		getPainelDesktop().add(menuBaixo);
+
 		///////////////////////////////////////////////////////////////////////
 		// criando menu e difinindo as ações dos intens de menu
 		ViewMenu menu = new ViewMenu();
 		setJMenuBar(menu.getMenuBar());
+
 		menu.itemClientes.setActionCommand("cliente");
 		menu.itemClientes.addActionListener(new TratarEventos());
 		menu.itemFornecedor.setActionCommand("fornecedor");
 		menu.itemFornecedor.addActionListener(new TratarEventos());
 		menu.itemContaBancaria.setActionCommand("conta");
 		menu.itemContaBancaria.addActionListener(new TratarEventos());
-		menu.itemCartoes.setActionCommand("cartao");
-		menu.itemCartoes.addActionListener(new TratarEventos());
 		menu.itemFuncionarios.setActionCommand("funcionario");
 		menu.itemFuncionarios.addActionListener(new TratarEventos());
-		menu.itemTipoPagamento.setActionCommand("tipoPGT");
-		menu.itemTipoPagamento.addActionListener(new TratarEventos());
 		menu.itemMarca.setActionCommand("marca");
 		menu.itemMarca.addActionListener(new TratarEventos());
 		menu.itemUnidades.setActionCommand("unidade");
 		menu.itemUnidades.addActionListener(new TratarEventos());
 		menu.itemCategorias.setActionCommand("categoria");
 		menu.itemCategorias.addActionListener(new TratarEventos());
-		menu.itemProdutos.setActionCommand("produto");
-		menu.itemProdutos.addActionListener(new TratarEventos());
-		menu.itemDepartamentos.setActionCommand("departamento");
-		menu.itemDepartamentos.addActionListener(new TratarEventos());
-		menu.itemPlanoDeConta.setActionCommand("plano");
-		menu.itemPlanoDeConta.addActionListener(new TratarEventos());
+		menu.itemProdutoCadastro.setActionCommand("produto");
+		menu.itemProdutoCadastro.addActionListener(new TratarEventos());
+		menu.itemProdutoImport.setActionCommand("produtoImport");
+		menu.itemProdutoImport.addActionListener(new TratarEventos());
 		menu.itemVendas.setActionCommand("venda");
 		menu.itemVendas.addActionListener(new TratarEventos());
 		menu.itemOrcamento.setActionCommand("orcamento");
@@ -154,6 +160,16 @@ public final class ViewPrincipal extends JFrame {
 		menu.itemMenuRapido.addActionListener(new TratarEventos());
 		menu.itemContaApagar.setActionCommand("ContaAPagar");
 		menu.itemContaApagar.addActionListener(new TratarEventos());
+		menu.itemContaReceber.setActionCommand("ContaAReceber");
+		menu.itemContaReceber.addActionListener(new TratarEventos());
+		menu.itemAlterarFundo.setActionCommand("fundo");
+		menu.itemAlterarFundo.addActionListener(new TratarEventos());
+		menu.itemCalculadora.setActionCommand("calc");
+		menu.itemCalculadora.addActionListener(new TratarEventos());
+		menu.itemAjuda.setActionCommand("ajuda");
+		menu.itemAjuda.addActionListener(new TratarEventos());
+		menu.itemAlterarTema.setActionCommand("tema");
+		menu.itemAlterarTema.addActionListener(new TratarEventos());
 
 		// setando metodo e difinindo a ação de sair do sistema
 		menu.itemSair.setActionCommand("Sair");
@@ -161,9 +177,8 @@ public final class ViewPrincipal extends JFrame {
 
 		// definindo os estilos das janelas do jfram e outras configurações
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		setLocationRelativeTo(null);
 		setResizable(false); // não pode ser mudado o tamanho da jfram
-		setBackground(UIManager.getColor("Button.focus")); // definindo o fundo
+		// setBackground(Color.getHSBColor(6, 20, 10)); // definindo o fundo
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // definindo a
 																// ação de
 																// fechar
@@ -211,6 +226,32 @@ public final class ViewPrincipal extends JFrame {
 
 	public static void setPainelDesktop(JDesktopPane painelDesktop) {
 		ViewPrincipal.painelDesktop = painelDesktop;
+	}
+
+	public void mostrarHora() {
+
+		if (null != da.dataActual()) {
+			lblData.setText(" Data " + da.dataActual());
+			lblHora.setText("Hora " + da.horaActual());
+		} else {
+			lblData.setText("Data 10:10:2010");
+			lblHora.setText("Hora 00:00:00");
+
+		}
+
+	}
+
+	public class verRelogio implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			try {
+				mostrarHora();
+			} catch (Exception e2) {
+				System.out.println(e2.getMessage());
+			}
+
+		}
+
 	}
 
 	/**
@@ -286,27 +327,6 @@ public final class ViewPrincipal extends JFrame {
 				}
 			}
 
-			if (e.getActionCommand().equals("cartao")) {
-				if (cartao == null) {
-					cartao = new CartaoController();
-					cartao.gui.setVisible(true);
-					ViewPrincipal.getPainelDesktop().add(cartao.gui);
-					try {
-						cartao.gui.setSelected(true);
-						if (cartao.gui.isClosable()) {
-							cartao = null;
-						}
-					} catch (PropertyVetoException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					// prod.setPosicao();
-				} else {
-					System.out.println("sam");
-					cartao.gui.setVisible(true);
-				}
-			}
-			
 			if (e.getActionCommand().equals("funcionario")) {
 				if (funcionario == null) {
 					funcionario = new FuncionarioController();
@@ -324,25 +344,6 @@ public final class ViewPrincipal extends JFrame {
 					// prod.setPosicao();
 				} else {
 					funcionario.gui.setVisible(true);
-				}
-			}
-			if (e.getActionCommand().equals("tipoPGT")) {
-				if (tipoPGT == null) {
-					tipoPGT = new TipoPagamentoController();
-					tipoPGT.gui.setVisible(true);
-					ViewPrincipal.getPainelDesktop().add(tipoPGT.gui);
-					try {
-						tipoPGT.gui.setSelected(true);
-						if (tipoPGT.gui.isClosable()) {
-							tipoPGT = null;
-						}
-					} catch (PropertyVetoException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					// prod.setPosicao();
-				} else {
-					tipoPGT.gui.setVisible(true);
 				}
 			}
 
@@ -404,61 +405,41 @@ public final class ViewPrincipal extends JFrame {
 				}
 			}
 
-			if (e.getActionCommand().equals("fornecdor")) {
-				if (fornecdor == null) {
-					fornecdor = new FornecedorController();
-					fornecdor.gui.setVisible(true);
-					ViewPrincipal.getPainelDesktop().add(fornecdor.gui);
+			if (e.getActionCommand().equals("produtoImport")) {
+				if (produtoImport == null) {
+					produtoImport = new ViewImportProduto();
+					produtoImport.setVisible(true);
+					getPainelDesktop().add(produtoImport);
 					try {
-						fornecdor.gui.setSelected(true);
-						if (fornecdor.gui.isClosable()) {
-							fornecdor = null;
-						}
+						produtoImport.setSelected(true);
 					} catch (PropertyVetoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					if (produtoImport.isClosable()) {
+						produtoImport = null;
+					}
 				} else {
-					fornecdor.gui.setVisible(true);
+					produtoImport.setVisible(true);
 				}
 			}
 
-			if (e.getActionCommand().equals("departamento")) {
-				if (departamento == null) {
-					departamento = new DepartamentoController();
-					departamento.gui.setVisible(true);
-					ViewPrincipal.getPainelDesktop().add(departamento.gui);
+			if (e.getActionCommand().equals("fornecedor")) {
+				if (fornecedor == null) {
+					fornecedor = new FornecedorController();
+					fornecedor.gui.setVisible(true);
+					ViewPrincipal.getPainelDesktop().add(fornecedor.gui);
 					try {
-						departamento.gui.setSelected(true);
-						if (departamento.gui.isClosable()) {
-							departamento = null;
+						fornecedor.gui.setSelected(true);
+						if (fornecedor.gui.isClosable()) {
+							fornecedor = null;
 						}
 					} catch (PropertyVetoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				} else {
-					departamento.gui.setVisible(true);
-				}
-			}
-
-			if (e.getActionCommand().equals("plano")) {
-				if (plano == null) {
-					plano = new PlanoDeContaController();
-					plano.gui.setVisible(true);
-					ViewPrincipal.getPainelDesktop().add(plano.gui);
-
-					try {
-						plano.gui.setSelected(true);
-						if (plano.gui.isClosable()) {
-							plano = null;
-						}
-					} catch (PropertyVetoException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else {
-					plano.gui.setVisible(true);
+					fornecedor.gui.setVisible(true);
 				}
 			}
 
@@ -537,7 +518,7 @@ public final class ViewPrincipal extends JFrame {
 
 				}
 			}
-			
+
 			if (e.getActionCommand().equals("ContaAPagar")) {
 				if (contaPaga == null) {
 					contaPaga = new ContaAPagarController();
@@ -557,18 +538,27 @@ public final class ViewPrincipal extends JFrame {
 
 				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
+			if (e.getActionCommand().equals("ContaAReceber")) {
+				if (contaReceber == null) {
+					contaReceber = new ContaAReceberController();
+					contaReceber.gui.setVisible(true);
+					ViewPrincipal.getPainelDesktop().add(contaReceber.gui);
+					try {
+						contaReceber.gui.setSelected(true);
+						if (contaReceber.gui.isClosable()) {
+							contaReceber = null;
+						}
+					} catch (PropertyVetoException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					contaReceber.gui.setVisible(true);
+
+				}
+			}
+
 			if (e.getActionCommand().equals("menu")) {
 				if (menuBaixo == null) {
 					menuBaixo = new ViewMenuBaixo();
@@ -588,7 +578,72 @@ public final class ViewPrincipal extends JFrame {
 
 				}
 			}
-			
+
+			if (e.getActionCommand().equals("calc")) {
+				String comando = "bash";
+				try {
+
+					Process processo = Runtime.getRuntime().exec(comando);
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
+			if (e.getActionCommand().equals("fundo")) {
+				if (fundo == null) {
+					fundo = new ViewAlteraFundo();
+					fundo.setVisible(true);
+					fundo.getBtnconfirmar().addActionListener(new ActionListener() {
+
+						public void actionPerformed(ActionEvent e) {
+							Config.setPropriedade("prop.btn.Fundo", fundo.getArquivo());
+							JOptionPane.showMessageDialog(ViewPrincipal.this,
+									"Fundo alterado. Reinicia para ver as modificações");
+
+						}
+					});
+
+				}
+			}
+
+			if (e.getActionCommand().equals("ajuda")) {
+				if (ajuda == null) {
+					ajuda = new ViewAjuda();
+					ajuda.setVisible(true);
+					getPainelDesktop().add(ajuda);
+
+					try {
+						ajuda.setSelected(true);
+					} catch (PropertyVetoException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					if (ajuda.isClosable()) {
+						ajuda = null;
+					}
+
+				}
+			}
+
+			if (e.getActionCommand().equals("tema")) {
+				if (tema == null) {
+					tema = new ViewAlteraTema();
+					tema.setVisible(true);
+					getPainelDesktop().add(tema);
+					try {
+						tema.setSelected(true);
+					} catch (PropertyVetoException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					if (tema.isClosable()) {
+						tema = null;
+					}
+
+				}
+			}
 
 		}
 

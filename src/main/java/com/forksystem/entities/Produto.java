@@ -31,7 +31,7 @@ public class Produto {
 	
 	@Column(name="preco_venda",nullable=false)
 	private BigDecimal precoVenda;
-	@Column(name="estoque",nullable=false)
+	@Column(name="estoque")
 	private Integer qtdEstoque;
 	
 	@Column(name="estoqueMinimo",nullable=false)
@@ -98,11 +98,11 @@ public class Produto {
 		this.nome = nome;
 	}
 
-	public Integer getMinimoInventario() {
+	public Integer getestoqueCritico() {
 		return estoqueCritico;
 	}
 
-	public void setMinimoInventario(Integer minimoInventario) {
+	public void setestoqueCritico(Integer minimoInventario) {
 		this.estoqueCritico = minimoInventario;
 	}
 
@@ -266,8 +266,13 @@ public class Produto {
 
 	@Override
 	public String toString() {
-		return nome;
+		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", precoCompra=" + precoCompra
+				+ ", precoVenda=" + precoVenda + ", qtdEstoque=" + qtdEstoque + ", estoqueCritico=" + estoqueCritico
+				+ ", codigo=" + codigo + ", img=" + img + ", fornecedor=" + fornecedor + ", categoria=" + categoria
+				+ ", marca=" + marca + ", unidade=" + unidade + "]";
 	}
+
+	
    	
 
 	

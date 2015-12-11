@@ -15,6 +15,7 @@ import java.awt.Dimension;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import java.awt.CardLayout;
 
@@ -31,13 +32,18 @@ public class ViewMesa extends JInternalFrame {
 		getContentPane().setForeground(new Color(255, 255, 255));
 		setClosable(true);
 		setIconifiable(true);
-		setBounds(100, 100, 1327, 780);
-			getContentPane().setLayout(new BorderLayout(0, 0));
+		setBounds(100, 100, 1200, 800);
 			panelMesas = new JPanel();
+			panelMesas.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			panelMesas.setBackground(new Color(0, 128, 128));
-			panelMesas.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-			getContentPane().add(panelMesas);
-			
+			panelMesas.setPreferredSize(new Dimension(800,600));
+			panelMesas.setLayout(new FlowLayout(1));
+			 final JScrollPane scroll = new JScrollPane(panelMesas);
+			 setLayout(new BorderLayout());
+			 add(scroll,BorderLayout.CENTER);
+			 JScrollBar vertical = scroll.getVerticalScrollBar();  
+			//Para rolar tudo para baixo:  
+			vertical.setValue(vertical.getMaximum());  
 			
 			setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 			

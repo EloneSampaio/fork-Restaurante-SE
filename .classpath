@@ -46,5 +46,6 @@
 	<classpathentry kind="lib" path="src/main/resources/syntheticaBlueMoon.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/syntheticaPlain.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/weblaf-complete-1.28.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/jxl.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

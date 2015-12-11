@@ -1,60 +1,44 @@
 package com.forksystem.ui;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
-import javax.swing.JInternalFrame;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
 import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.border.CompoundBorder;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JTabbedPane;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
-
-import com.forksystem.controller.TabelaDepartamentoController;
-import com.forksystem.controller.TabelaFornecedorController;
-import com.toedter.components.JSpinField;
-import java.awt.BorderLayout;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
-
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
 
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
-import javax.swing.ScrollPaneConstants;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.JFormattedTextField.AbstractFormatter;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
+
+import com.forksystem.controller.TabelaDepartamentoController;
+import javax.swing.JCheckBox;
 
 public class ViewFuncionario extends JInternalFrame {
 	
@@ -84,12 +68,12 @@ public class ViewFuncionario extends JInternalFrame {
 	private JFormattedTextField txtCpf;
 	private JLabel lblCidade_1;
 	private JComboBox cmbCidade;
-	private JLabel lblCep;
-	private JTextField txtCp;
 	private JTextField txtDepartamento;
 	private JTextField textFuncao;
 	private JTextField txtImagem;
 	private JTextField txtcodigo;
+	private JTextField textField_1;
+	private JPasswordField pwdSenha;
 	
 	
 	
@@ -426,29 +410,38 @@ public class ViewFuncionario extends JInternalFrame {
 		gbc_cmbCidade.gridx = 5;
 		gbc_cmbCidade.gridy = 1;
 		panelEndereco.add(cmbCidade, gbc_cmbCidade);
-		
-		lblCep = new JLabel("CEP");
-		lblCep.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblCep.setForeground(new Color(255, 255, 255));
-		GridBagConstraints gbc_lblCep = new GridBagConstraints();
-		gbc_lblCep.anchor = GridBagConstraints.NORTHWEST;
-		gbc_lblCep.insets = new Insets(0, 0, 0, 5);
-		gbc_lblCep.gridx = 1;
-		gbc_lblCep.gridy = 2;
-		panelEndereco.add(lblCep, gbc_lblCep);
-		
-		txtCp = new JTextField();
-		txtCp.setColumns(10);
-		GridBagConstraints gbc_txtCp = new GridBagConstraints();
-		gbc_txtCp.anchor = GridBagConstraints.NORTHWEST;
-		gbc_txtCp.insets = new Insets(0, 0, 0, 5);
-		gbc_txtCp.gridx = 2;
-		gbc_txtCp.gridy = 2;
-		panelEndereco.add(txtCp, gbc_txtCp);
 		getContentPane().add(tabbedPaneCadastro);
 		
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBorder(new TitledBorder(new CompoundBorder(new LineBorder(null, 1, true), UIManager.getBorder("EditorPane.border")), "", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel.setBackground(new Color(0, 128, 128));
+		tabbedPaneCadastro.addTab("Dados de Acesso", null, panel, null);
+		
+		JLabel label_3 = new JLabel("Nome");
+		label_3.setForeground(Color.WHITE);
+		label_3.setFont(new Font("Dialog", Font.BOLD, 14));
+		label_3.setBounds(180, 44, 79, 17);
+		panel.add(label_3);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(277, 44, 201, 19);
+		panel.add(textField_1);
+		
+		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setForeground(Color.WHITE);
+		lblSenha.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblSenha.setBounds(180, 85, 79, 17);
+		panel.add(lblSenha);
+		
+		pwdSenha = new JPasswordField();
+		pwdSenha.setText("senha");
+		pwdSenha.setBounds(277, 75, 201, 27);
+		panel.add(pwdSenha);
+		
 		baseToolBar = new BaseToolBar();
-		baseToolBar.setBounds(0, 516, 960, 88);
+		baseToolBar.setBounds(0, 537, 960, 67);
 		getContentPane().add(baseToolBar);
 
 	}
@@ -559,9 +552,6 @@ public class ViewFuncionario extends JInternalFrame {
 	}
 	
 
-	public JTextField getTxtCp() {
-		return txtCp;
-	}
 	
 	public JComboBox getCmbCidade() {
 		return cmbCidade;

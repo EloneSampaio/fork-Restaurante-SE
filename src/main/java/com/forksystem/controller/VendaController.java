@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,10 @@ import com.forksystem.dao.IPagamento;
 import com.forksystem.dao.IPedido;
 import com.forksystem.dao.IPessoa;
 import com.forksystem.dao.IProduto;
+import com.forksystem.entities.Cliente;
 import com.forksystem.entities.ItemPedido;
+import com.forksystem.entities.Operacao;
+import com.forksystem.entities.Pagamento;
 import com.forksystem.entities.Pedido;
 import com.forksystem.entities.StatusPedido;
 import com.forksystem.entities.TipoPagamentos;
@@ -57,19 +61,12 @@ public class VendaController {
 		initializeTable();
 		venda = new TableModelVenda();
 		personalizarTabela();
-		gui.ouvinte(new OuvirObjecto(), gui.getBtnNovo());
-		gui.ouvinte(new OuvirObjecto(), gui.getBtnCancelar());
-		gui.ouvinte(new OuvirObjecto(), gui.getBtnConfirmar());
-		gui.ouvinte(new OuvirObjecto(), gui.getBtnExcluir());
-		gui.ouvinte(new OuvirObjecto(), gui.getBtnImprimir());
-		gui.ouvinte(new OuvirObjecto(), gui.getBtnInserirItem());
-		gui.ouvinte(new OuvirObjecto(), gui.getBtnVer());
-		gui.ouvinte(new OuvirObjecto(), gui.getBtnCalcularTotal());
 		daoPedido = Context.getInstace().getContexto().getBean(IPedido.class);
 		pessoa = Context.getInstace().getContexto().getBean(IPessoa.class);
 		produto = Context.getInstace().getContexto().getBean(IProduto.class);
 		Daooperacao = Context.getInstace().getContexto().getBean(IOperacao.class);
 		DaoPagamento = Context.getInstace().getContexto().getBean(IPagamento.class);
+		action();
 
 	}
 
@@ -78,6 +75,17 @@ public class VendaController {
 		tabela = new TableModelVenda(venda, gui.getTable());
 		gui.getTable().setModel(tabela);
 		gui.getTable().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+	}
+
+	public void action() {
+		gui.ouvinte(new OuvirObjecto(), gui.getBtnNovo());
+		gui.ouvinte(new OuvirObjecto(), gui.getBtnCancelar());
+		gui.ouvinte(new OuvirObjecto(), gui.getBtnConfirmar());
+		gui.ouvinte(new OuvirObjecto(), gui.getBtnExcluir());
+		gui.ouvinte(new OuvirObjecto(), gui.getBtnImprimir());
+		gui.ouvinte(new OuvirObjecto(), gui.getBtnInserirItem());
+		gui.ouvinte(new OuvirObjecto(), gui.getBtnCalcularTotal());
 
 	}
 
@@ -134,67 +142,63 @@ public class VendaController {
 		TableModelVenda model = (TableModelVenda) gui.getTable().getModel();
 
 		Pedido pedido = new Pedido();
-//		Pagamento pagamento = new Pagamento();
-//		Operacao operacao;
-
+		Pagamento pagamento = new Pagamento();
+		
 		Date data = (Date) gui.getData().getValue();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		//
-		// try {
-		pedido.setDataCriacao(new Utilitario().converterData(sdf.format(data)));
-		pedido.setValorTotal(parse(gui.getTxtTotal().getText().toString()));
-		pedido.setStatus(StatusPedido.PAGO);
-		pedido.setTipoPagamento((TipoPagamentos) gui.getCmbTipoPagamento().getSelectedItem());
-		pedido.setValorDesconto(BigDecimal.ZERO);
-//		if (!gui.getTxtDesconto().getText().isEmpty()) {
-//			pedido.setValorDesconto(parse(gui.getTxtDesconto().getText()));
-//			pagamento.setVlorDoDesconto(0);
-//
+	//	try {
+			pedido.setDataCriacao(new Utilitario().converterData(sdf.format(data)));
+			pedido.setValorTotal(parse(gui.getTxtTotal().getText().toString()));
+			pedido.setStatus(StatusPedido.PAGO);
+			pedido.setTipoPagamento((TipoPagamentos) gui.getCmbTipoPagamento().getSelectedItem());
+			pedido.setValorDesconto(BigDecimal.ZERO);
+			if (!gui.getTxtDesconto().getText().isEmpty()) {
+				pedido.setValorDesconto(parse(gui.getTxtDesconto().getText()));
+				pagamento.setVlorDoDesconto(0);
+
+			}
+			if (!gui.getTxtCliente().getText().isEmpty()) {
+				pedido.setCliente((Cliente) pessoa.findOne(Long.parseLong(gui.getTxtCliente().getText())));
+			}
+
+			if (!gui.getTxtFuncionario().getText().isEmpty()) {
+				pedido.setAtendente(pessoa.findByFuncionario(Long.parseLong(gui.getTxtFuncionario().getText())));
+			}
+
+			for (ItemPedido valor : model.getColunas()) {
+				//System.out.println(produto.findOne(valor.getId()));
+			   Operacao	operacao = new Operacao();
+				operacao.setData(new Utilitario().converterData(sdf.format(data)));
+				operacao.setProduto(produto.findOne(valor.getId()));
+				operacao.setQtd(valor.getQuantidade());
+				operacao.setTipo(2);
+				Daooperacao.saveAndFlush(operacao);
+			}
+
+			for (ItemPedido dados : model.getColunas()) {
+				dados.setId(null);
+				dados.setPedido(pedido);
+
+			}
+			pedido.getItens().addAll(model.getColunas());
+
+			daoPedido.saveAndFlush(pedido);
+
+			pagamento.setDataPagamento(new Utilitario().converterData(sdf.format(data)));
+			pagamento.setLancamento(Calendar.getInstance());
+			pagamento.setTipoPagamento((TipoPagamentos) gui.getCmbTipoPagamento().getSelectedItem());
+			if(!gui.getTxtDesconto().getText().isEmpty()){
+			pagamento.setVlorDoDesconto(Integer.parseInt(gui.getTxtDesconto().getText()));
+			}
+
+			DaoPagamento.saveAndFlush(pagamento);
+
+			alerta("Venda concluida");
+
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage() + e.getClass());
+//			alerta("Erro ao confirmar venda");
 //		}
-//		if (!gui.getTxtCliente().getText().isEmpty()) {
-//			pedido.setCliente((Cliente) pessoa.findOne(Long.parseLong(gui.getTxtCliente().getText())));
-//		}
-//
-//		if (!gui.getTxtFuncionario().getText().isEmpty()) {
-//			pedido.setAtendente(pessoa.findByFuncionario(Long.parseLong(gui.getTxtFuncionario().getText())));
-//		}
-
-		for (ItemPedido dados : model.getColunas()) {
-			dados.setPedido(pedido);
-			
-		}
-		pedido.getItens().addAll(model.getColunas());
-		
-		daoPedido.saveAndFlush(pedido);
-		
-
-
-//		pagamento.setDataPagamento(new Utilitario().converterData(sdf.format(data)));
-//		pagamento.setLancamento(Calendar.getInstance());
-//		pagamento.setTipoPagamento((TipoPagamentos) gui.getCmbTipoPagamento().getSelectedItem());
-//		pagamento.setVlorDoDesconto(0);
-
-		// if (!(null == gui.getCmbCartao().getSelectedItem())) {
-		// pedido.setCartao(cartao.findByNome(gui.getCmbCartao().getSelectedItem().toString()));
-		// }
-
-//		for (ItemPedido valor : model.getColunas()) {
-//			operacao = new Operacao();
-//			operacao.setData(new Utilitario().converterData(sdf.format(data)));
-//			operacao.setProduto(produto.getOne(valor.getId()));
-//			operacao.setQtd(valor.getQuantidade());
-//			operacao.setTipo(2);
-//			Daooperacao.save(operacao);
-//		}
-
-		// DaoPagamento.saveAndFlush(pagamento);
-		
-		alerta("Venda concluida");
-
-		// } catch (Exception e) {
-		// System.out.println(e.getMessage() + e.getClass());
-		// alerta("Erro ao confirmar venda");
-		// }
 
 	}
 

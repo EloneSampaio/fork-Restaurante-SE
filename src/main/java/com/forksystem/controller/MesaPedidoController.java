@@ -1,19 +1,25 @@
 package com.forksystem.controller;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -33,6 +39,7 @@ import com.forksystem.entities.TipoPagamentos;
 import com.forksystem.models.TableModelPedido;
 import com.forksystem.ui.ViewMesaPedido;
 import com.forksystem.utils.Context;
+import com.forksystem.utils.FacturaMesa;
 
 public class MesaPedidoController {
 
@@ -44,31 +51,33 @@ public class MesaPedidoController {
 	public IReserva reservaDao = null;
 	private Long idPedido = null;
 	private Long idReserva = null;
+	Map<String, JButton> buttons;
 
 	public TableModelPedido tabela;
 	public java.util.Vector<String> dados = new java.util.Vector<String>();
 	Boolean control = false;
 	TableRowSorter<TableModel> sorter = null;
-	private Mesa idMesa=null;
+	private Mesa idMesa = null;
 
 	JButton btn;
 	JButton btnProd;
 	JLabel label;
 	String iconPath = "/img/mesa/mesaop.png";
 	String iconPath1 = "/img/mesa/mesaof.png";
+	String padrao = "/img/mesa/not.jpg";
 
 	public MesaPedidoController(String m) {
 		gui = new ViewMesaPedido(m);
+		buttons = new HashMap<String, JButton>();
+
 		category = Context.getInstace().getContexto().getBean(ICategoria.class);
 		produto = Context.getInstace().getContexto().getBean(IProduto.class);
 		mesa = Context.getInstace().getContexto().getBean(IMesa.class);
 		pedidoDAo = Context.getInstace().getContexto().getBean(IPedido.class);
 		reservaDao = Context.getInstace().getContexto().getBean(IReserva.class);
-		
 		mostrar();
 		setIdMesa();
 		initializeTable();
-		
 		gui.ouvinte(new OuvirObjecto(), gui.getBtnAdicionar());
 		gui.ouvinte(new OuvirObjecto(), gui.getBtnExluir());
 		gui.ouvinte(new OuvirObjecto(), gui.getBtnConfirmar());
@@ -83,13 +92,13 @@ public class MesaPedidoController {
 	/*
 	 * Metodo para setar o id da mesa em contexto
 	 */
-	public void setIdMesa(){
+	public void setIdMesa() {
 		setIdMesa(mesa.findByNome(gui.getLblMesa().getText()));
-		
+
 	}
-	
+
 	public void initializeTable() {
-		if (null == pedidoDAo.findByMesa(getIdMesa()) || null==reservaDao.findByMesa(getIdMesa())) {
+		if (null == pedidoDAo.findByMesa(getIdMesa()) || null == reservaDao.findByMesa(getIdMesa())) {
 			List<ItemPedido> item = new ArrayList<ItemPedido>();
 			tabela = new TableModelPedido(item, gui.getTable());
 			gui.getTable().setModel(tabela);
@@ -107,7 +116,6 @@ public class MesaPedidoController {
 		tabela = new TableModelPedido(pedido.getItens(), gui.getTable());
 		gui.getTable().setModel(tabela);
 		gui.getTable().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		System.out.println(pedido.getItens());
 		setIdPedido(pedido.getId());
 		gui.getTotalGeral().setText(pedido.getValorTotal().toString());
 
@@ -116,15 +124,12 @@ public class MesaPedidoController {
 	public void mostrar() {
 
 		for (Categoria dados : category.findAll()) {
-			btn = new JButton(dados.getNome());
-			btn.setIcon(new ImageIcon(dados.getImg()));
-			btn.setActionCommand(String.valueOf(dados.getId()));
-			btn.setFocusable(true);
-			btn.setPreferredSize(new Dimension(100, 100));
-			gui.getPanelCategoria().add(btn);
-			listaProdutosCategoria(btn, dados.getNome(), dados.getImg());
+
+			addButton(dados.getNome(), dados.getImg(), String.valueOf(dados.getId()));
+			gui.getPanelProduto().removeAll();
 
 		}
+		addAction(new OuvirBotoes());
 
 	}
 
@@ -134,7 +139,7 @@ public class MesaPedidoController {
 
 			public void actionPerformed(ActionEvent e) {
 				buscarProdutoCategoria(Long.parseLong(bt.getActionCommand()));
-
+				System.out.println("oi");
 			}
 		});
 
@@ -156,6 +161,9 @@ public class MesaPedidoController {
 		Categoria cate = category.findOne(id);
 		gui.getPanelProduto().removeAll();
 		for (Produto dados : cate.getProdutos()) {
+
+			// addButtonProduto(dados.getNome(), dados.getImg(),
+			// dados.getCodigo());
 			btn = new JButton(dados.getNome());
 			btn.setIcon(new ImageIcon(dados.getImg()));
 			btn.setActionCommand(String.valueOf(dados.getId()));
@@ -178,29 +186,89 @@ public class MesaPedidoController {
 		boolean achou = false;
 		TableModelPedido model = (TableModelPedido) gui.getTable().getModel();
 
-		for (int j = 0; j < model.getRowCount() && achou == false; j++) {
-			Object objecto = model.getValueAt(j, 0);
-			if (!"".equals(objecto)) {
+		try {
+			for (int j = 0; j < model.getRowCount() && achou == false; j++) {
+				Object objecto = model.getValueAt(j, 0);
+				if (!"".equals(objecto)) {
 
-				if (p.getNome().equals(objecto)) {
-					pos = j;
-					achou = true;
+					if (p.getNome().equals(objecto)) {
+						pos = j;
+						achou = true;
+					}
 				}
 			}
+
+			if (achou) {
+				alerta("Produto já adicionado");
+				return;
+			}
+
+			ItemPedido item = new ItemPedido();
+			item.setProduto(p);
+			item.setQuantidade(new BigDecimal(1));
+			item.setValorUnitario(p.getPrecoVenda());
+			item.setValorTotal(item.getQuantidade().multiply(item.getValorUnitario()));
+			model.addRow(item);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 
-		if (achou) {
-			alerta("Produto já adicionado");
-			return;
+	}
+
+	public void addAction(ActionListener list) {
+
+		for (String key : getButtons().keySet()) {
+
+			getButtons().get(key).addActionListener(list);
 		}
+	}
 
-		ItemPedido item = new ItemPedido();
-		item.setProduto(p);
-		item.setQuantidade(new BigDecimal(1));
-		item.setValorUnitario(p.getPrecoVenda());
-		item.setValorTotal(item.getQuantidade().multiply(item.getValorUnitario()));
-		model.addRow(item);
+	public void addButton(String text, String iconPath, String comand) {
+		JButton buton = buildButton(text, iconPath, comand);
+		buton.setPreferredSize(new Dimension(140, 140));
+		buton.setFont(new Font("arial", Font.PLAIN, 10));
+		buttons.put(text.toLowerCase(), buton);
+		gui.getPanelCategoria().add(buton);
 
+	}
+
+	public void addButtonProduto(String text, String iconPath, String com) {
+		final JButton buton = buildButton(text, iconPath, com);
+		buton.setPreferredSize(new Dimension(150, 150));
+		buton.setFont(new Font("arial", Font.PLAIN, 14));
+		buttons.put(text.toLowerCase(), buton);
+		gui.getPanelProduto().add(buton);
+		buton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				preencherPedido(produto.findOne(Long.parseLong(buton.getActionCommand().toString())));
+
+			}
+		});
+
+	}
+
+	private JButton buildButton(String text, String iconPath, String comand) {
+		JButton buton = new JButton();
+		buton.setText(text);
+		buton.setToolTipText(text);
+		buton.setHorizontalTextPosition(SwingConstants.CENTER);
+		buton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		String icon = (iconPath == null ? padrao : iconPath);
+		buton.setIcon(new ImageIcon(icon));
+		buton.setFocusable(true);
+		buton.setActionCommand(comand);
+
+		buton.setBackground(Color.cyan);
+		buton.setFocusPainted(true);
+		buton.setForeground(Color.BLACK);
+		return buton;
+
+	}
+
+	public Map<String, JButton> getButtons() {
+		return buttons;
 	}
 
 	private static BigDecimal parse(String str) {
@@ -239,6 +307,7 @@ public class MesaPedidoController {
 		public void actionPerformed(ActionEvent e) {
 
 			if (e.getActionCommand().equals("adicionar")) {
+				gui.getBtnConfirmar().setEnabled(false);
 
 				try {
 					int row = gui.getTable().getSelectedRow();
@@ -277,6 +346,7 @@ public class MesaPedidoController {
 
 			}
 			if (e.getActionCommand().equals("excluir")) {
+				gui.getBtnConfirmar().setEnabled(false);
 
 				try {
 					int row = gui.getTable().getSelectedRow();
@@ -353,15 +423,43 @@ public class MesaPedidoController {
 			if (e.getActionCommand().equals("calcular"))
 
 			{
-				
-					BigDecimal totalGeral = model.somarTodos().setScale(2, BigDecimal.ROUND_HALF_EVEN);
-					gui.getTxtTotal().setText(totalGeral.toString());
-					String vl = NumberFormat.getCurrencyInstance().format(totalGeral);
-					gui.getTotalGeral().setText(vl);
-					gui.getLblTotalGeral().setVisible(true);
-					gui.getBtnConfirmar().setEnabled(true);
-				
 
+				BigDecimal totalGeral = model.somarTodos().setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				gui.getTxtTotal().setText(totalGeral.toString());
+				String vl = NumberFormat.getCurrencyInstance().format(totalGeral);
+				gui.getTotalGeral().setText(vl);
+				gui.getLblTotalGeral().setVisible(true);
+				gui.getBtnConfirmar().setEnabled(true);
+
+			}
+
+			if (e.getActionCommand().equals("imprimir"))
+
+			{
+
+				FacturaMesa factura = new FacturaMesa(model.getColunas());
+				factura.escrever();
+
+			}
+
+		}
+
+	}
+
+	public class OuvirBotoes implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			try {
+				Categoria cate = category.findOne(Long.parseLong(e.getActionCommand().toString()));
+				gui.getPanelProduto().removeAll();
+				for (Produto dados : cate.getProdutos()) {
+					addButtonProduto(dados.getNome(), dados.getImg(), dados.getId().toString());
+
+				}
+				gui.getPanelProduto().repaint();
+			} catch (Exception e2) {
+				gui.getPanelProduto().removeAll();
+				System.out.println(e2.getMessage());
 			}
 
 		}

@@ -8,11 +8,13 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -42,6 +44,10 @@ public class Pessoa {
 	@Column(name="cpf",nullable=false,unique=true)
 	private String cpf;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Provincias provincia;
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Cidades cidade;
 	
 	
 	
@@ -139,6 +145,26 @@ public class Pessoa {
 
 	public void setContacto(Contacto contacto) {
 		this.contacto = contacto;
+	}
+
+
+	public Provincias getProvincia() {
+		return provincia;
+	}
+
+
+	public void setProvincia(Provincias provincia) {
+		this.provincia = provincia;
+	}
+
+
+	public Cidades getCidade() {
+		return cidade;
+	}
+
+
+	public void setCidade(Cidades cidade) {
+		this.cidade = cidade;
 	}
 	
 	

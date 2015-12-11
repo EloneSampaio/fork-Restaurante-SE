@@ -1,12 +1,17 @@
 package com.forksystem.ui;
 
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+
+import com.forksystem.utils.Config;
 
 public class ToolBarOpcao extends JToolBar {
 
@@ -47,34 +52,32 @@ public class ToolBarOpcao extends JToolBar {
 
 	}
 
-	// protected void defaultButons() {
-	// Properties prop = getPropriedade();
-	// this.addButton(prop.getProperty("prop.btn.novo"), "/img/novo.png",
-	// "novo")
-	// .addButton(prop.getProperty("prop.btn.guardar"), "/img/1230_1847_48.png",
-	// "guardar")
-	// .addButton(prop.getProperty("prop.btn.editar"), "/img/edit-icon.png",
-	// "editar")
-	// .addButton(prop.getProperty("prop.btn.apagar"), "/img/icon_excluir.jpg",
-	// "apagar")
-	// .addButton(prop.getProperty("prop.btn.cancelar"), "/img/cancel.jpg",
-	// "cancelar");
-	// }
-
 	protected void defaultButons() {
-		this.addButton("Produto", "/img/PNG/archive1.png", "produto")
-				.addButton("Compras", "/img/PNG/compra.png", "compra")
-				.addButton("Vendas", "/img/PNG/forward.png", "venda")
-				.addButton("Caixa", "/img/PNG/cash.png", "caixa")
-				.addButton("Mesa", "/img/PNG/cash.png", "mesa")
-				.addButton("Clientes", "/img/PNG/folder.png", "cliente")
-				.addButton("Fornecedores", "/img/PNG/fornecedor.png", "fornecedor")
-				.addButton("Funcionarios", "/img/PNG/users.png", "funcionario")
-				.addButton("Configurações", "/img/PNG/advanced.png", "config")
-				.addButton("Backup", "/img/PNG/hd.png", "backup")
-				.addButton("Importar Backup", "/img/PNG/install.png", "importar");
-		
+		Properties prop = Config.getPropriedade();
+		System.out.println(prop);
+		this.addButton(prop.getProperty("prop.btn.Produto"), "/img/PNG/archive1.png", "produto")
+				.addButton(prop.getProperty("prop.btn.Compras"), "/img/PNG/compra.png", "compra")
+				.addButton(prop.getProperty("prop.btn.Vendas"), "/img/PNG/forward.png", "venda")
+				.addButton(prop.getProperty("prop.btn.Mesa"), "/img/PNG/cash.png", "mesa")
+				.addButton(prop.getProperty("prop.btn.Fornecedores"), "/img/PNG/fornecedor.png", "fornecedor")
+				.addButton(prop.getProperty("prop.btn.Usuario"), "/img/PNG/user.png", "Usuarios")
+
+		.addButton(prop.getProperty("prop.btn.Config"), "/img/PNG/advanced.png", "config");
+
 	}
+
+	// protected void defaultButons() {
+	// this.addButton("Produto", "/img/PNG/archive1.png", "produto")
+	// .addButton("Compras", "/img/PNG/compra.png", "compra")
+	// .addButton("Vendas", "/img/PNG/forward.png", "venda").addButton("Caixa",
+	// "/img/PNG/cash.png", "caixa")
+	// .addButton("Mesa", "/img/PNG/cash.png", "mesa").addButton("Clientes",
+	// "/img/PNG/folder.png", "cliente")
+	// .addButton("Fornecedores", "/img/PNG/fornecedor.png", "fornecedor")
+	// .addButton("Funcionarios", "/img/PNG/users.png", "funcionario")
+	// .addButton("Configurações", "/img/PNG/advanced.png", "config");
+	//
+	// }
 
 	public ActionListener getListener() {
 		return listener;
@@ -85,20 +88,5 @@ public class ToolBarOpcao extends JToolBar {
 		this.listener = listener;
 
 	}
-
-	// public Properties getPropriedade() {
-	// try {
-	//
-	// Properties propriedades = new Properties();
-	// FileInputStream file = new
-	// FileInputStream("./src/main/java/dados.properties");
-	// propriedades.load(file);
-	// return propriedades;
-	// } catch (Exception e) {
-	// System.out.println(e.getMessage());
-	// return null;
-	// }
-	//
-	// }
 
 }

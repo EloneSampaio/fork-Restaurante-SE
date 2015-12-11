@@ -25,12 +25,17 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.forksystem.dao.ICidades;
 import com.forksystem.dao.IPessoa;
+import com.forksystem.dao.IProvincia;
+import com.forksystem.entities.Cidades;
 import com.forksystem.entities.Cliente;
 import com.forksystem.entities.Contacto;
 import com.forksystem.entities.Endereco;
 import com.forksystem.entities.Fornecedor;
+import com.forksystem.entities.Provincias;
 import com.forksystem.models.CellRenderer;
+import com.forksystem.models.ComboBoxModelPersonalizado;
 import com.forksystem.models.HeaderCellRenderer;
 import com.forksystem.models.TableModelPersonalizado;
 import com.forksystem.ui.ViewCliente;
@@ -42,10 +47,16 @@ public class FornecedorController {
 
 	public ViewFornecedor gui;
 	private IPessoa dao;
+	private IProvincia estado = null;
+	private ICidades cidadeDao = null;
 	public TableModelPersonalizado tabela;
 	public java.util.Vector<String> dados = new java.util.Vector<String>();
 	Boolean control = false;
 	TableRowSorter<TableModel> sorter = null;
+	ArrayList<Provincias> provincia = new ArrayList<Provincias>();
+	final ArrayList<Cidades> cidade = new ArrayList<Cidades>();
+	ComboBoxModelPersonalizado modelProvincia = new ComboBoxModelPersonalizado(provincia);
+	ComboBoxModelPersonalizado modelCidade = new ComboBoxModelPersonalizado(cidade);
 
 	public FornecedorController() {
 
@@ -55,7 +66,28 @@ public class FornecedorController {
 		initializeTable();
 		gui.getTable().addMouseListener((new OuvirObjecto()));
 		personalizarTabela();
+		preencherCombo();
 		disableAllBtn(false);
+		
+
+	}
+	public void preencherCombo() {
+		cidadeDao = Context.getInstace().getContexto().getBean(ICidades.class);
+		estado = Context.getInstace().getContexto().getBean(IProvincia.class);
+
+		provincia.addAll((estado.findAll()));
+		gui.getCmbEstado().setModel(modelProvincia);
+
+		gui.getCmbEstado().addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				cidade.clear();
+				cidade.addAll(cidadeDao.findByProvincia((Provincias) gui.getCmbEstado().getSelectedItem()));
+				
+				gui.getCmbCidade().setModel(modelCidade);
+
+			}
+		});
 
 	}
 

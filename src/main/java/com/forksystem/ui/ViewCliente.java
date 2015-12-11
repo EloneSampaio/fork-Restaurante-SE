@@ -73,7 +73,6 @@ public class ViewCliente extends JInternalFrame {
 	private ButtonGroup jradioButoes;
 	private JTextField txtPesquisar;
 	private JPanel panelCadastro;
-	private JLabel lblIcon;
 	private JLabel labelNome;
 	private JLabel lblNascimento;
 	private JLabel lblSexo;
@@ -121,11 +120,11 @@ public class ViewCliente extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public ViewCliente() {
-		getContentPane().setBackground(new Color(102, 153, 153));
+		getContentPane().setBackground(new Color(0, 128, 128));
 		setTitle("Cadastro/Clientes");
 		setClosable(true);
 		setIconifiable(true);
-		setBounds(100, 100, 1017, 651);
+		setBounds(100, 100, 1017, 745);
 		
 		JPanel panelLista = new JPanel();
 		panelLista.setBorder(new TitledBorder(new CompoundBorder(new LineBorder(null, 1, true), UIManager.getBorder("EditorPane.border")), "", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
@@ -133,15 +132,13 @@ public class ViewCliente extends JInternalFrame {
 		baseToolBar = new BaseToolBar();
 		
 		JTabbedPane tabbedPaneCadastro = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPaneCadastro.setBackground(new Color(0, 128, 0));
 		tabbedPaneCadastro.setFont(new Font("Dialog", Font.BOLD, 14));
 		tabbedPaneCadastro.setForeground(new Color(255, 255, 255));
 		
 		panelCadastro = new JPanel();
-		panelCadastro.setBorder(new TitledBorder(new CompoundBorder(new LineBorder(null, 1, true), UIManager.getBorder("EditorPane.border")), "", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panelCadastro.setBackground(new Color(0, 128, 128));
 		tabbedPaneCadastro.addTab("Dados Pessoas", null, panelCadastro, null);
-		
-		lblIcon = new JLabel("");
-		lblIcon.setIcon(new ImageIcon(ViewCliente.class.getResource("/img/funcionario.jpg")));
 		
 		try {
 			 data= new MaskFormatter("##/##/####");
@@ -157,12 +154,15 @@ public class ViewCliente extends JInternalFrame {
 			e.printStackTrace();
 		}
 		labelNome = new JLabel("Nome");
+		labelNome.setForeground(new Color(255, 255, 255));
 		labelNome.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		lblNascimento = new JLabel("Nascimento");
+		lblNascimento.setForeground(new Color(255, 255, 255));
 		lblNascimento.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		lblSexo = new JLabel("Sexo");
+		lblSexo.setForeground(new Color(255, 255, 255));
 		lblSexo.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		txtData = CalendarFactory.createDateField();
@@ -172,9 +172,11 @@ public class ViewCliente extends JInternalFrame {
 		textCodigo=new JTextField();
 		
 		rdbtnMasculino = new JRadioButton("Homem");
+		rdbtnMasculino.setForeground(new Color(255, 255, 255));
 		rdbtnMasculino.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		rdbtnFemenino = new JRadioButton("Mulher");
+		rdbtnFemenino.setForeground(new Color(255, 255, 255));
 		rdbtnFemenino.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 	
@@ -183,9 +185,11 @@ public class ViewCliente extends JInternalFrame {
 		txtCpf.setColumns(14);
 		
 		rdbtnOutro = new JRadioButton("Outro");
+		rdbtnOutro.setForeground(new Color(255, 255, 255));
 		rdbtnOutro.setFont(new Font("Dialog", Font.BOLD, 14));
 		
 		JLabel lblBi = new JLabel("BI");
+		lblBi.setForeground(new Color(255, 255, 255));
 		
 		
 		
@@ -193,9 +197,7 @@ public class ViewCliente extends JInternalFrame {
 		gl_panelCadastro.setHorizontalGroup(
 			gl_panelCadastro.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelCadastro.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblIcon, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-					.addGap(41)
+					.addGap(232)
 					.addGroup(gl_panelCadastro.createParallelGroup(Alignment.LEADING)
 						.addComponent(labelNome)
 						.addComponent(lblNascimento)
@@ -210,52 +212,47 @@ public class ViewCliente extends JInternalFrame {
 							.addGap(18)
 							.addComponent(rdbtnOutro, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, 265, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panelCadastro.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(txtData, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(txtCpf, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)))
-					.addContainerGap(464, Short.MAX_VALUE))
+						.addComponent(txtData, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE))
+					.addGap(375))
 		);
 		gl_panelCadastro.setVerticalGroup(
 			gl_panelCadastro.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelCadastro.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panelCadastro.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panelCadastro.createSequentialGroup()
-							.addGroup(gl_panelCadastro.createParallelGroup(Alignment.BASELINE)
-								.addComponent(labelNome)
-								.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addGroup(gl_panelCadastro.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNascimento)
-								.addComponent(txtData, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addGroup(gl_panelCadastro.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblSexo)
-								.addComponent(rdbtnMasculino)
-								.addComponent(rdbtnFemenino)
-								.addComponent(rdbtnOutro))
-							.addGap(18)
-							.addGroup(gl_panelCadastro.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblBi)))
-						.addComponent(lblIcon, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(81, Short.MAX_VALUE))
+					.addGap(20)
+					.addGroup(gl_panelCadastro.createParallelGroup(Alignment.BASELINE)
+						.addComponent(labelNome)
+						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panelCadastro.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNascimento)
+						.addComponent(txtData, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panelCadastro.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSexo)
+						.addComponent(rdbtnMasculino)
+						.addComponent(rdbtnFemenino)
+						.addComponent(rdbtnOutro))
+					.addGap(18)
+					.addGroup(gl_panelCadastro.createParallelGroup(Alignment.BASELINE)
+						.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblBi))
+					.addContainerGap(73, Short.MAX_VALUE))
 		);
 		panelCadastro.setLayout(gl_panelCadastro);
 		
 		panelContacto = new JPanel();
-		panelContacto.setBorder(new TitledBorder(new CompoundBorder(new LineBorder(null, 1, true), UIManager.getBorder("EditorPane.border")), "Dados de Contacto", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panelContacto.setBackground(new Color(0, 128, 128));
 		tabbedPaneCadastro.addTab("Contacto", null, panelContacto, "Contacto");
 		
-		JLabel labelContacto = new JLabel("");
-		labelContacto.setIcon(new ImageIcon(ViewCliente.class.getResource("/img/images (1).jpg")));
-		
 		JLabel labelEmail = new JLabel("E-Mail");
+		labelEmail.setForeground(new Color(255, 255, 255));
 		
 		textEmail = new JTextField();
 		textEmail.setColumns(10);
 		
 		JLabel lblTelefone = new JLabel("Telefone");
+		lblTelefone.setForeground(new Color(255, 255, 255));
 		
 		textTelefone = new JFormattedTextField(telefone);
 		textTelefone.setColumns(10);
@@ -263,9 +260,7 @@ public class ViewCliente extends JInternalFrame {
 		gl_panelContacto.setHorizontalGroup(
 			gl_panelContacto.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelContacto.createSequentialGroup()
-					.addGap(26)
-					.addComponent(labelContacto, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
-					.addGap(69)
+					.addGap(265)
 					.addGroup(gl_panelContacto.createParallelGroup(Alignment.LEADING)
 						.addComponent(labelEmail)
 						.addComponent(lblTelefone))
@@ -288,45 +283,41 @@ public class ViewCliente extends JInternalFrame {
 						.addGroup(gl_panelContacto.createSequentialGroup()
 							.addComponent(textEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(textTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(labelContacto, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE))
-					.addGap(32))
+							.addComponent(textTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(122))
 		);
 		panelContacto.setLayout(gl_panelContacto);
 		
 		panelEndereco = new JPanel();
-		panelEndereco.setBorder(new TitledBorder(new CompoundBorder(new LineBorder(null, 1, true), UIManager.getBorder("EditorPane.border")), "Dados de endereço", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panelEndereco.setBackground(new Color(0, 128, 128));
 		tabbedPaneCadastro.addTab("Endereço", null, panelEndereco, "Endereco");
-		
-		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon(ViewCliente.class.getResource("/img/images.png")));
 		
 		textEndreco = new JTextField();
 		textEndreco.setColumns(10);
 		
 		JLabel lblEndereo = new JLabel("Endereço");
+		lblEndereo.setForeground(new Color(255, 255, 255));
 		
 		textBairro = new JTextField();
 		textBairro.setColumns(10);
 		
 		JLabel lblBairro = new JLabel("Bairro");
+		lblBairro.setForeground(new Color(255, 255, 255));
 		
 		JLabel Estado = new JLabel("Provincia");
+		Estado.setForeground(new Color(255, 255, 255));
 		
 		cmbEstado = new JComboBox();
-		cmbEstado.setModel(new DefaultComboBoxModel(new String[] {"Luanda", "Cabinda"}));
 		
 		lblCidade_1 = new JLabel("Cidade");
+		lblCidade_1.setForeground(new Color(255, 255, 255));
 		
 		cmbCidade = new JComboBox();
-		cmbCidade.setModel(new DefaultComboBoxModel(new String[] {"Luanda", "São Luis", "São Paulo"}));
 		GroupLayout gl_panelEndereco = new GroupLayout(panelEndereco);
 		gl_panelEndereco.setHorizontalGroup(
 			gl_panelEndereco.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelEndereco.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addGap(172)
 					.addGroup(gl_panelEndereco.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblEndereo)
 						.addComponent(lblBairro))
@@ -337,12 +328,12 @@ public class ViewCliente extends JInternalFrame {
 					.addGap(34)
 					.addGroup(gl_panelEndereco.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(lblCidade_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(Estado, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(Estado))
 					.addGap(40)
 					.addGroup(gl_panelEndereco.createParallelGroup(Alignment.LEADING)
 						.addComponent(cmbEstado, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cmbCidade, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(164, Short.MAX_VALUE))
+					.addContainerGap(210, Short.MAX_VALUE))
 		);
 		gl_panelEndereco.setVerticalGroup(
 			gl_panelEndereco.createParallelGroup(Alignment.LEADING)
@@ -351,54 +342,70 @@ public class ViewCliente extends JInternalFrame {
 					.addGroup(gl_panelEndereco.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panelEndereco.createSequentialGroup()
 							.addGap(2)
-							.addGroup(gl_panelEndereco.createParallelGroup(Alignment.LEADING)
-								.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_panelEndereco.createSequentialGroup()
-									.addComponent(lblEndereo)
-									.addGap(22)
-									.addComponent(lblBairro))))
+							.addComponent(lblEndereo)
+							.addGap(22)
+							.addComponent(lblBairro))
 						.addGroup(gl_panelEndereco.createSequentialGroup()
 							.addGroup(gl_panelEndereco.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_panelEndereco.createParallelGroup(Alignment.BASELINE)
 									.addComponent(Estado)
 									.addComponent(cmbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addComponent(textEndreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
 							.addGroup(gl_panelEndereco.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelEndereco.createSequentialGroup()
-									.addGap(18)
-									.addComponent(cmbCidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_panelEndereco.createSequentialGroup()
-									.addGap(18)
-									.addGroup(gl_panelEndereco.createParallelGroup(Alignment.TRAILING)
-										.addComponent(lblCidade_1)
-										.addComponent(textBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))))
-					.addContainerGap(21, Short.MAX_VALUE))
+								.addComponent(cmbCidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_panelEndereco.createParallelGroup(Alignment.TRAILING)
+									.addComponent(lblCidade_1)
+									.addComponent(textBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
+					.addContainerGap(125, Short.MAX_VALUE))
 		);
 		panelEndereco.setLayout(gl_panelEndereco);
+		
+		txtPesquisar = new JTextField();
+		txtPesquisar.setColumns(10);
+		
+		JLabel lblPesquisar = new JLabel("Pesquisar");
+		lblPesquisar.setForeground(new Color(255, 255, 255));
+		lblPesquisar.setIcon(new ImageIcon(ViewCliente.class.getResource("/img/PNG/search.png")));
 		
 				
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(baseToolBar, GroupLayout.DEFAULT_SIZE, 1007, Short.MAX_VALUE)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(panelLista, GroupLayout.DEFAULT_SIZE, 1005, Short.MAX_VALUE)
-						.addComponent(baseToolBar, GroupLayout.DEFAULT_SIZE, 983, Short.MAX_VALUE)
-						.addComponent(tabbedPaneCadastro, GroupLayout.PREFERRED_SIZE, 983, Short.MAX_VALUE))
+					.addComponent(tabbedPaneCadastro, GroupLayout.PREFERRED_SIZE, 983, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblPesquisar)
+					.addGap(32)
+					.addComponent(txtPesquisar, GroupLayout.PREFERRED_SIZE, 253, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(603, Short.MAX_VALUE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panelLista, GroupLayout.DEFAULT_SIZE, 983, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panelLista, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addGap(20)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addComponent(lblPesquisar, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtPesquisar, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addComponent(panelLista, GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
 					.addGap(18)
 					.addComponent(tabbedPaneCadastro, GroupLayout.PREFERRED_SIZE, 266, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(baseToolBar, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+					.addGap(18)
+					.addComponent(baseToolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 		);
 		tabelaDeClientes = new JTable();
+		tabelaDeClientes.setFont(new Font("Dialog", Font.PLAIN, 14));
 	
 		tabelaDeClientes.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -415,33 +422,14 @@ public class ViewCliente extends JInternalFrame {
 		});
 		scrollPane.setHorizontalScrollBar(new JScrollBar(0));
 		
-		JLabel lblPesquisar = new JLabel("Pesquisar");
-		lblPesquisar.setIcon(new ImageIcon(ViewCliente.class.getResource("/img/PNG/search.png")));
-		
-		txtPesquisar = new JTextField();
-		txtPesquisar.setColumns(10);
-		
 		GroupLayout gl_panelLista = new GroupLayout(panelLista);
 		gl_panelLista.setHorizontalGroup(
 			gl_panelLista.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panelLista.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblPesquisar)
-					.addGap(32)
-					.addComponent(txtPesquisar, GroupLayout.PREFERRED_SIZE, 253, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(627, Short.MAX_VALUE))
-				.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE)
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 981, Short.MAX_VALUE)
 		);
 		gl_panelLista.setVerticalGroup(
 			gl_panelLista.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelLista.createSequentialGroup()
-					.addGap(12)
-					.addGroup(gl_panelLista.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtPesquisar, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPesquisar, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-					.addContainerGap())
+				.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
 		);
 		
 		
@@ -452,58 +440,7 @@ public class ViewCliente extends JInternalFrame {
 		jradioButoes.add(rdbtnMasculino);
         jradioButoes.add(rdbtnOutro);		
         
-        JTabbedPane PanelEmpresa = new JTabbedPane(JTabbedPane.TOP);
-        tabbedPaneCadastro.addTab("Empresa", null, PanelEmpresa, null);
-        
-        panelEmpresas = new JPanel();
-        PanelEmpresa.addTab("Empresa", null, panelEmpresas, null);
-        panelEmpresas.setLayout(null);
-        
-        lblEmpresa = new JLabel("Empresa");
-        lblEmpresa.setBounds(32, 36, 69, 16);
-        panelEmpresas.add(lblEmpresa);
-        
-        txtEmpresa = new JTextField();
-        txtEmpresa.setBounds(131, 35, 200, 20);
-        panelEmpresas.add(txtEmpresa);
-        txtEmpresa.setColumns(10);
-        
-        lblTelefoneDaEmpresa = new JLabel("Telefone");
-        lblTelefoneDaEmpresa.setBounds(32, 64, 69, 16);
-        panelEmpresas.add(lblTelefoneDaEmpresa);
-        
-        txtTelefoneempresa = new JTextField();
-        txtTelefoneempresa.setBounds(131, 67, 200, 23);
-        panelEmpresas.add(txtTelefoneempresa);
-        txtTelefoneempresa.setColumns(10);
-        
-        lblProfisso = new JLabel("Profissão");
-        lblProfisso.setBounds(361, 37, 69, 16);
-        panelEmpresas.add(lblProfisso);
-        
-        txtProfissoa = new JTextField();
-        txtProfissoa.setBounds(479, 35, 158, 20);
-        panelEmpresas.add(txtProfissoa);
-        txtProfissoa.setColumns(10);
-        
-        lblTelefonecliente = new JLabel("Telefone/Cliente");
-        lblTelefonecliente.setBounds(361, 70, 118, 16);
-        panelEmpresas.add(lblTelefonecliente);
-        
-        txtTelefonecliente = new JTextField();
-        txtTelefonecliente.setBounds(479, 68, 158, 20);
-        panelEmpresas.add(txtTelefonecliente);
-        txtTelefonecliente.setColumns(10);
-        
-        lblRenda = new JLabel("Renda");
-        lblRenda.setBounds(670, 37, 69, 16);
-        panelEmpresas.add(lblRenda);
-        
-        txtRenda = new JTextField();
-        txtRenda.setBounds(726, 35, 163, 20);
-        panelEmpresas.add(txtRenda);
-        txtRenda.setColumns(10);
-	
+       
 		
 	
 		getContentPane().setLayout(groupLayout);
@@ -651,5 +588,8 @@ public class ViewCliente extends JInternalFrame {
 	}
 	public JPanel getPanelEmpresas() {
 		return panelEmpresas;
+	}
+	public JComboBox getCmbCidade() {
+		return cmbCidade;
 	}
 }

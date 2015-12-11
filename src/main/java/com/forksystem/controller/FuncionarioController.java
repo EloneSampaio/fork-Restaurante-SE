@@ -76,7 +76,6 @@ public class FuncionarioController {
 		endereco.setCidade(gui.getCmbCidade().getSelectedItem().toString());
 		endereco.setBairro(gui.getTextBairro().getText());
 		endereco.setEndereco(gui.getTextEndreco().getText());
-		endereco.setCep(gui.getTxtCp().getText());
 		funcionario.setEndereco(endereco);
 		endereco.setEstado(gui.getCmbEstado().getSelectedItem().toString());
 
@@ -127,7 +126,6 @@ public class FuncionarioController {
 		gui.getTextBairro().setText(funcionario.getEndereco().getBairro());
 		gui.getTextEndreco().setText(funcionario.getEndereco().getEndereco());
 		gui.getCmbCidade().setSelectedItem(funcionario.getEndereco().getCidade());
-		gui.getTxtCp().setText(funcionario.getEndereco().getCep());
 		gui.getTextFuncao().setText(funcionario.getFuncao());
 		gui.getTxtDepartamento().setText(funcionario.getDepartamento().getId()+"");
 		ImageIcon icon = new ImageIcon(funcionario.getImagem());  

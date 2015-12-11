@@ -67,6 +67,7 @@ public class ViewContasAPagar extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public ViewContasAPagar() {
+		setTitle("Movimento/Contas a Pagar");
 		setIconifiable(true);
 		setClosable(true);
 		getContentPane().setBackground(new Color(0, 128, 128));
@@ -75,13 +76,13 @@ public class ViewContasAPagar extends JInternalFrame {
 		getContentPane().setLayout(null);
 		
 		JLabel label = new JLabel("");
-		label.setBounds(357, 0, 32, 32);
+		label.setBounds(369, 0, 32, 32);
 		label.setIcon(new ImageIcon(ViewContasAPagar.class.getResource("/img/PNG/search.png")));
 		label.setFont(new Font("Dialog", Font.BOLD, 14));
 		getContentPane().add(label);
 		
 		textPesquisar = new JTextField();
-		textPesquisar.setBounds(394, 0, 356, 19);
+		textPesquisar.setBounds(394, 12, 356, 19);
 		textPesquisar.setColumns(10);
 		getContentPane().add(textPesquisar);
 		
@@ -222,19 +223,19 @@ public class ViewContasAPagar extends JInternalFrame {
 		lblValorpago = new JLabel("");
 		lblValorpago.setForeground(Color.WHITE);
 		lblValorpago.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblValorpago.setBounds(140, 115, 70, 15);
+		lblValorpago.setBounds(140, 115, 91, 15);
 		getContentPane().add(lblValorpago);
 		
 		lblValorApagar = new JLabel("");
 		lblValorApagar.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblValorApagar.setForeground(Color.WHITE);
-		lblValorApagar.setBounds(376, 114, 70, 15);
+		lblValorApagar.setBounds(376, 114, 83, 15);
 		getContentPane().add(lblValorApagar);
 		
 		lblVencidas = new JLabel("");
 		lblVencidas.setForeground(Color.WHITE);
 		lblVencidas.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblVencidas.setBounds(619, 114, 70, 15);
+		lblVencidas.setBounds(619, 114, 95, 15);
 		getContentPane().add(lblVencidas);
 
 	}

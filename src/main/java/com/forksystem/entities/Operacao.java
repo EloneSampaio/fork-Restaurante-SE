@@ -22,7 +22,7 @@ public class Operacao {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name="produto_id",nullable=false)
+	@JoinColumn(name="produto_id",nullable=false,unique=true)
 	private Produto produto;
 	@Column(name="quantidade",nullable=false)
 	private BigDecimal qtd;
@@ -64,6 +64,11 @@ public class Operacao {
 	}
 	public void setQtd(BigDecimal qtd) {
 		this.qtd = qtd;
+	}
+	@Override
+	public String toString() {
+		return "Operacao [id=" + id + ", produto=" + produto + ", qtd=" + qtd + ", tipo=" + tipo + ", data=" + data
+				+ "]";
 	}
 
 

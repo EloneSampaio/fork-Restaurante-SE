@@ -1,50 +1,43 @@
 package com.forksystem.ui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-
-import java.awt.BorderLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 
 import com.forksystem.controller.TabelaFornecedorController;
 import com.forksystem.controller.TabelaMarcaController;
-import com.forksystem.entities.Cartao;
-import com.forksystem.entities.Categoria;
-import com.forksystem.entities.TipoPagamento;
-
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.Color;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import com.forksystem.utils.LerDocumento;
 
 public class ViewProduto extends JInternalFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txtNome;
 	private JTextField txtPrecoCompra;
 	private JTextField txtVenda;
 	private JTextField txtstoqueMinimo;
-	private JTextField imagem;
 	private BaseToolBar baseToolBar;
 	private JTextField txtFornecedor;
 	private JComboBox cmbCategoria;
@@ -62,6 +55,8 @@ public class ViewProduto extends JInternalFrame {
 	private JLabel lblImagem;
 	private JTextField textEstoque;
 	private JLabel lblQtdestoque;
+	private JTextField imagem;
+	private JComboBox cmbCatgoria;
 
 	
 
@@ -69,26 +64,88 @@ public class ViewProduto extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public ViewProduto() {
+		getContentPane().setBackground(new Color(0, 128, 128));
 		setTitle("Cadastro de produtos");
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(100, 100, 1022, 672);
+		setBounds(100, 100, 1231, 721);
 		textId=new JTextField();
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{1013, 0};
-		gridBagLayout.rowHeights = new int[]{247, 311, 79, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		getContentPane().setLayout(gridBagLayout);
+		imagem = new JTextField();
+		getContentPane().setLayout(null);
+		
+		JPanel panelTabela = new JPanel();
+		panelTabela.setBounds(0, 0, 1218, 356);
+		panelTabela.setBackground(new Color(0, 128, 128));
+		
+		scrollPane = new JScrollPane(table);
+		JLabel lblPesquisarPorNome = new JLabel("Pesquisar Por Nome");
+		lblPesquisarPorNome.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblPesquisarPorNome.setForeground(new Color(255, 255, 255));
+		lblPesquisarPorNome.setIcon(new ImageIcon(ViewProduto.class.getResource("/img/PNG/search.png")));
+		
+		txtPesquisar = new JTextField();
+		txtPesquisar.setColumns(10);
+		
+		cmbCatgoria = new JComboBox();
+		
+		JLabel lblPesquisarPor = new JLabel("Filtrar Categoria");
+		lblPesquisarPor.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblPesquisarPor.setForeground(Color.WHITE);
+		GroupLayout gl_panelTabela = new GroupLayout(panelTabela);
+		gl_panelTabela.setHorizontalGroup(
+			gl_panelTabela.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelTabela.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelTabela.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelTabela.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1194, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(Alignment.TRAILING, gl_panelTabela.createSequentialGroup()
+							.addComponent(lblPesquisarPorNome, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
+							.addGap(81))
+						.addGroup(gl_panelTabela.createSequentialGroup()
+							.addComponent(lblPesquisarPor, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(cmbCatgoria, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 628, Short.MAX_VALUE)
+							.addComponent(txtPesquisar, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
+							.addGap(71))))
+		);
+		gl_panelTabela.setVerticalGroup(
+			gl_panelTabela.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelTabela.createSequentialGroup()
+					.addGap(5)
+					.addComponent(lblPesquisarPorNome)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panelTabela.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(gl_panelTabela.createSequentialGroup()
+							.addGroup(gl_panelTabela.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblPesquisarPor, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+								.addComponent(txtPesquisar, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+							.addGap(11))
+						.addGroup(gl_panelTabela.createSequentialGroup()
+							.addComponent(cmbCatgoria)
+							.addGap(18)))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		
+		table = new JTable();
+		table.setFont(new Font("Dialog", Font.PLAIN, 14));
+		scrollPane.setViewportView(table);
+		
+		panelTabela.setLayout(gl_panelTabela);
+		getContentPane().add(panelTabela);
 		
 		panelCadastro = new JPanel();
+		panelCadastro.setBounds(0, 361, 1218, 259);
 		panelCadastro.setBackground(new Color(0, 128, 128));
 		
 		txtNome = new JTextField();
-		txtNome.setBounds(94, 41, 179, 19);
+		txtNome.setBounds(118, 54, 179, 19);
 		txtNome.setColumns(10);
 		cmbUnidade = new JComboBox();
-		cmbUnidade.setBounds(375, 187, 87, 24);
+		cmbUnidade.setBounds(399, 196, 87, 24);
 		
 		JLabel lblGerarEstoque = new JLabel("Gerar estoque");
 		lblGerarEstoque.setBounds(94, 33136, 103, 15);
@@ -102,71 +159,71 @@ public class ViewProduto extends JInternalFrame {
 		JLabel lblEstoqueInicial = new JLabel("Critico");
 		lblEstoqueInicial.setForeground(new Color(255, 255, 255));
 		lblEstoqueInicial.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblEstoqueInicial.setBounds(94, 85, 126, 15);
+		lblEstoqueInicial.setBounds(118, 98, 126, 15);
 		
 		txtPrecoCompra = new JTextField();
-		txtPrecoCompra.setBounds(94, 244, 87, 24);
+		txtPrecoCompra.setBounds(112, 304, 87, 24);
 		txtPrecoCompra.setText("0,00");
 		txtPrecoCompra.setColumns(10);
 		
 		JLabel lblPreoDeCompra = new JLabel("Preço/Compra");
 		lblPreoDeCompra.setForeground(new Color(255, 255, 255));
 		lblPreoDeCompra.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblPreoDeCompra.setBounds(94, 223, 126, 15);
+		lblPreoDeCompra.setBounds(112, 283, 126, 15);
 		
 		JLabel lblPreoDeVenda = new JLabel("Preço /Venda");
 		lblPreoDeVenda.setForeground(new Color(255, 255, 255));
 		lblPreoDeVenda.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblPreoDeVenda.setBounds(247, 223, 126, 15);
+		lblPreoDeVenda.setBounds(265, 283, 126, 15);
 		
 		txtVenda = new JTextField();
-		txtVenda.setBounds(247, 244, 87, 24);
+		txtVenda.setBounds(265, 304, 87, 24);
 		txtVenda.setText("0,00");
 		txtVenda.setColumns(10);
 		
 		JLabel lblMarca = new JLabel("Cod Marca");
 		lblMarca.setForeground(new Color(255, 255, 255));
 		lblMarca.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblMarca.setBounds(247, 159, 106, 15);
+		lblMarca.setBounds(271, 172, 106, 15);
 		
 		txtMarca = new JTextField();
 		txtMarca.setEnabled(false);
 		txtMarca.setEditable(false);
-		txtMarca.setBounds(247, 186, 61, 24);
+		txtMarca.setBounds(271, 199, 61, 24);
 		
 		JLabel lblFornecedor = new JLabel("Cod Fornecedor");
 		lblFornecedor.setForeground(new Color(255, 255, 255));
 		lblFornecedor.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblFornecedor.setBounds(94, 164, 129, 15);
+		lblFornecedor.setBounds(118, 177, 129, 15);
 		lblFornecedor.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		txtFornecedor = new JTextField();
 		txtFornecedor.setEnabled(false);
 		txtFornecedor.setEditable(false);
-		txtFornecedor.setBounds(94, 187, 70, 24);
+		txtFornecedor.setBounds(118, 200, 70, 24);
 		
 		JLabel lblGrupo = new JLabel("Categoria");
 		lblGrupo.setForeground(new Color(255, 255, 255));
 		lblGrupo.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblGrupo.setBounds(375, 85, 87, 15);
+		lblGrupo.setBounds(422, 94, 87, 15);
 		
 		cmbCategoria = new JComboBox();
-		cmbCategoria.setBounds(375, 108, 139, 23);
+		cmbCategoria.setBounds(399, 121, 139, 23);
 		
 		JLabel lblNome = new JLabel("Nome");
 		lblNome.setForeground(new Color(255, 255, 255));
 		lblNome.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblNome.setBounds(94, 20, 70, 15);
+		lblNome.setBounds(118, 33, 70, 15);
 		
 		txtstoqueMinimo = new JTextField();
-		txtstoqueMinimo.setBounds(94, 112, 103, 19);
+		txtstoqueMinimo.setBounds(118, 125, 103, 19);
 		txtstoqueMinimo.setColumns(10);
 		
 	
 		
 		arquivo_1 = new JButton("Escolha");
 		arquivo_1.setIcon(new ImageIcon(ViewProduto.class.getResource("/img/PNG/zoom in.png")));
-		arquivo_1.setBounds(706, 208, 137, 45);
+		arquivo_1.setBounds(675, 196, 126, 45);
 		arquivo_1.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -182,21 +239,14 @@ public class ViewProduto extends JInternalFrame {
 			}
 		});
 		
-		imagem = new JTextField();
-		imagem.setVisible(false);
-		imagem.setEditable(false);
-		imagem.setBounds(898, 207, 39, 19);
-		imagem.setColumns(10);
-		
 		JLabel unidade = new JLabel("Unidade");
 		unidade.setForeground(new Color(255, 255, 255));
 		unidade.setFont(new Font("Dialog", Font.BOLD, 14));
-		unidade.setBounds(375, 160, 87, 15);
+		unidade.setBounds(399, 173, 87, 15);
 		panelCadastro.setLayout(null);
 		panelCadastro.add(lblEstoqueInicial);
 		panelCadastro.add(txtstoqueMinimo);
 		panelCadastro.add(arquivo_1);
-		panelCadastro.add(imagem);
 		panelCadastro.add(lblGerarEstoque);
 		panelCadastro.add(lblEstoque);
 		panelCadastro.add(label);
@@ -218,11 +268,11 @@ public class ViewProduto extends JInternalFrame {
 		JLabel lblDescrio = new JLabel("Descrição");
 		lblDescrio.setForeground(new Color(255, 255, 255));
 		lblDescrio.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblDescrio.setBounds(303, 20, 103, 15);
+		lblDescrio.setBounds(327, 33, 103, 15);
 		panelCadastro.add(lblDescrio);
 		
 		txtDescricao = new JTextField();
-		txtDescricao.setBounds(302, 41, 266, 19);
+		txtDescricao.setBounds(309, 54, 266, 19);
 		panelCadastro.add(txtDescricao);
 		txtDescricao.setColumns(10);
 		
@@ -238,7 +288,7 @@ public class ViewProduto extends JInternalFrame {
 			}
 		});
 		lblBuscar.setIcon(new ImageIcon(ViewProduto.class.getResource("/img/PNG/search.png")));
-		lblBuscar.setBounds(171, 186, 39, 25);
+		lblBuscar.setBounds(195, 199, 39, 25);
 		panelCadastro.add(lblBuscar);
 		
 		label_2 = new JLabel("");
@@ -251,91 +301,30 @@ public class ViewProduto extends JInternalFrame {
 				
 			}
 		});
-		
-		JPanel panelTabela = new JPanel();
-		panelTabela.setBackground(new Color(0, 128, 128));
-		
-		scrollPane = new JScrollPane(table);
-		JLabel label_1 = new JLabel("Pesquisar");
-		label_1.setForeground(new Color(255, 255, 255));
-		label_1.setIcon(new ImageIcon(ViewProduto.class.getResource("/img/PNG/search.png")));
-		
-		txtPesquisar = new JTextField();
-		txtPesquisar.setColumns(10);
-		GroupLayout gl_panelTabela = new GroupLayout(panelTabela);
-		gl_panelTabela.setHorizontalGroup(
-			gl_panelTabela.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panelTabela.createSequentialGroup()
-					.addGroup(gl_panelTabela.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panelTabela.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 970, Short.MAX_VALUE))
-						.addGroup(gl_panelTabela.createSequentialGroup()
-							.addGap(664)
-							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
-							.addGap(2)
-							.addComponent(txtPesquisar, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		gl_panelTabela.setVerticalGroup(
-			gl_panelTabela.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelTabela.createSequentialGroup()
-					.addGroup(gl_panelTabela.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panelTabela.createSequentialGroup()
-							.addContainerGap(18, Short.MAX_VALUE)
-							.addComponent(txtPesquisar, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(gl_panelTabela.createSequentialGroup()
-							.addGap(14)
-							.addComponent(label_1)
-							.addPreferredGap(ComponentPlacement.UNRELATED)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		
-		panelTabela.setLayout(gl_panelTabela);
-		GridBagConstraints gbc_panelTabela = new GridBagConstraints();
-		gbc_panelTabela.fill = GridBagConstraints.VERTICAL;
-		gbc_panelTabela.insets = new Insets(0, 0, 5, 0);
-		gbc_panelTabela.gridx = 0;
-		gbc_panelTabela.gridy = 0;
-		getContentPane().add(panelTabela, gbc_panelTabela);
 		label_2.setIcon(new ImageIcon(ViewProduto.class.getResource("/img/PNG/search.png")));
-		label_2.setBounds(317, 186, 32, 25);
+		label_2.setBounds(341, 199, 32, 25);
 		panelCadastro.add(label_2);
 		
 		lblImagem = new JLabel("");
 		lblImagem.setToolTipText("Imagem");
-		lblImagem.setBounds(646, 20, 257, 170);
+		lblImagem.setBounds(615, 18, 257, 170);
 		panelCadastro.add(lblImagem);
 		
 		lblQtdestoque = new JLabel("Qtd/Estoque");
 		lblQtdestoque.setForeground(new Color(255, 255, 255));
 		lblQtdestoque.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblQtdestoque.setBounds(247, 85, 126, 15);
+		lblQtdestoque.setBounds(271, 98, 126, 15);
 		panelCadastro.add(lblQtdestoque);
 		
 		textEstoque = new JTextField();
 		textEstoque.setColumns(10);
-		textEstoque.setBounds(247, 112, 103, 19);
+		textEstoque.setBounds(271, 125, 103, 19);
 		panelCadastro.add(textEstoque);
-		GridBagConstraints gbc_panelCadastro = new GridBagConstraints();
-		gbc_panelCadastro.fill = GridBagConstraints.BOTH;
-		gbc_panelCadastro.insets = new Insets(0, 0, 5, 0);
-		gbc_panelCadastro.gridx = 0;
-		gbc_panelCadastro.gridy = 1;
-		getContentPane().add(panelCadastro, gbc_panelCadastro);
+		getContentPane().add(panelCadastro);
 		
 		baseToolBar = new BaseToolBar();
-		GridBagConstraints gbc_baseToolBar = new GridBagConstraints();
-		gbc_baseToolBar.fill = GridBagConstraints.BOTH;
-		gbc_baseToolBar.gridx = 0;
-		gbc_baseToolBar.gridy = 2;
-		getContentPane().add(baseToolBar, gbc_baseToolBar);
+		baseToolBar.setBounds(0, 625, 1218, 67);
+		getContentPane().add(baseToolBar);
 
 	}
 	
@@ -431,5 +420,8 @@ public class ViewProduto extends JInternalFrame {
 	}
 	public JLabel getLblQtdestoque() {
 		return lblQtdestoque;
+	}
+	public JComboBox getCmbCatgoria() {
+		return cmbCatgoria;
 	}
 }

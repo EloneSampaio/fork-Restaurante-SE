@@ -151,29 +151,29 @@ public class CategoriaController {
 	public void adicionar() {
 		Categoria categoria = new Categoria();
 
-		categoria.setNome(gui.getTextNome().getText());
-		categoria.setDescricao(gui.getTextDescricao().getText());
+		try {
 
-		if (!gui.getTxtImagem().getText().isEmpty()) {
+			categoria.setNome(gui.getTextNome().getText());
+			categoria.setDescricao(gui.getTextDescricao().getText());
 
-			categoria.setImg(gui.getTxtImagem().getText());
-		}
-		if (!gui.getTextId().getText().isEmpty()) {
-			Long id = Long.parseLong(gui.getTextId().getText());
-			categoria.setId(id);
-		}
+			if (!gui.getTxtImagem().getText().isEmpty()) {
 
-	//	try {
+				categoria.setImg(gui.getTxtImagem().getText());
+			}
+			if (!gui.getTextId().getText().isEmpty()) {
+				Long id = Long.parseLong(gui.getTextId().getText());
+				categoria.setId(id);
+			}
 
 			dao.saveAndFlush(categoria);
 			alerta("Operação realizada");
 			gui.getTextId().setText(null);
 			initializeTable();
 
-	//	} catch (Exception e) {
-		//	alerta("Erro ao fazer cadastro");
-		//	Log.error("falha ao salvar" + e.getMessage());
-	//	}
+		} catch (Exception e) {
+			alerta("Erro ao fazer cadastro");
+			Log.error("falha ao salvar" + e.getMessage());
+		}
 
 	}
 
@@ -196,11 +196,11 @@ public class CategoriaController {
 		gui.getTextId().setText(categoria.getId() + "");
 		gui.getTextNome().setText(categoria.getNome().toString());
 		gui.getTextDescricao().setText(categoria.getDescricao().toString());
-		ImageIcon icon = new ImageIcon(categoria.getImg());  
+		ImageIcon icon = new ImageIcon(categoria.getImg());
 		gui.getLblImagem().setIcon(null);
 		gui.getLblImagem().setIcon(icon);
 		gui.getTxtImagem().setText(categoria.getImg());
-		
+
 	}
 
 	public class OuvirObjecto implements ActionListener, MouseListener {
@@ -208,14 +208,16 @@ public class CategoriaController {
 		public void actionPerformed(ActionEvent e) {
 
 			if (e.getActionCommand() == "novo") {
+				gui.getLblImagem().setIcon(null);
+				
 				gui.getTable().clearSelection();
-                dados.clear();
+				dados.clear();
 				dados.add("guardar");
 				dados.add("cancelar");
 				dados.add("novo");
 				disableOrenableBtnToEdit(false);
 				limparTodos();
-				
+
 			} else if (e.getActionCommand() == "guardar") {
 				if (new Utilitario(gui.getPanel()).verificarCampos()) {
 					alerta("preencha os campos");
@@ -224,6 +226,10 @@ public class CategoriaController {
 					control = false;
 				}
 				if (!control) {
+					if (dao.findByNome(gui.getTextNome().getText()) != null) {
+						alerta("Categoria já existe");
+						return;
+					}
 					dados.clear();
 					adicionar();
 					dados.add("editar");

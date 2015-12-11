@@ -88,20 +88,6 @@ public class ViewFornecedor extends JInternalFrame {
 	
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewCliente frame = new ViewCliente();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -111,7 +97,7 @@ public class ViewFornecedor extends JInternalFrame {
 		setTitle("Cadastro/Fornecedores");
 		setClosable(true);
 		setIconifiable(true);
-		setBounds(100, 100, 973, 714);
+		setBounds(100, 100, 996, 714);
 		
 		try {
 			 data= new MaskFormatter("##/##/####");
@@ -160,6 +146,7 @@ public class ViewFornecedor extends JInternalFrame {
 		
 		JPanel panelLista = new JPanel();
 		panelLista.setBorder(new TitledBorder(new CompoundBorder(new LineBorder(null, 1, true), UIManager.getBorder("EditorPane.border")), "", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panelLista.setLayout(null);
 		GridBagConstraints gbc_panelLista = new GridBagConstraints();
 		gbc_panelLista.fill = GridBagConstraints.BOTH;
 		gbc_panelLista.insets = new Insets(0, 0, 5, 0);
@@ -167,12 +154,6 @@ public class ViewFornecedor extends JInternalFrame {
 		gbc_panelLista.gridx = 0;
 		gbc_panelLista.gridy = 1;
 		getContentPane().add(panelLista, gbc_panelLista);
-		GridBagLayout gbl_panelLista = new GridBagLayout();
-		gbl_panelLista.columnWidths = new int[]{941, 0};
-		gbl_panelLista.rowHeights = new int[]{259, 0};
-		gbl_panelLista.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_panelLista.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panelLista.setLayout(gbl_panelLista);
 		table = new JTable();
 		table.setFont(new Font("Dialog", Font.PLAIN, 13));
 		
@@ -184,13 +165,10 @@ public class ViewFornecedor extends JInternalFrame {
 				}
 			));
 			JScrollPane scrollPane = new JScrollPane(table);
+			scrollPane.setBounds(0, 0, 976, 288);
 			
 				scrollPane.setHorizontalScrollBar(new JScrollBar(0));
-				GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-				gbc_scrollPane.fill = GridBagConstraints.BOTH;
-				gbc_scrollPane.gridx = 0;
-				gbc_scrollPane.gridy = 0;
-				panelLista.add(scrollPane, gbc_scrollPane);
+				panelLista.add(scrollPane);
 		
 		JTabbedPane tabbedPaneCadastro = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPaneCadastro.setForeground(new Color(255, 255, 255));
@@ -259,16 +237,6 @@ public class ViewFornecedor extends JInternalFrame {
 		gbl_panelContacto.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panelContacto.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelContacto.setLayout(gbl_panelContacto);
-		
-		JLabel labelContacto = new JLabel("");
-		labelContacto.setIcon(new ImageIcon(ViewCliente.class.getResource("/img/images (1).jpg")));
-		GridBagConstraints gbc_labelContacto = new GridBagConstraints();
-		gbc_labelContacto.fill = GridBagConstraints.BOTH;
-		gbc_labelContacto.insets = new Insets(0, 0, 0, 5);
-		gbc_labelContacto.gridheight = 3;
-		gbc_labelContacto.gridx = 0;
-		gbc_labelContacto.gridy = 1;
-		panelContacto.add(labelContacto, gbc_labelContacto);
 		
 		JLabel labelEmail = new JLabel("E-Mail");
 		labelEmail.setForeground(new Color(255, 255, 255));
@@ -342,16 +310,6 @@ public class ViewFornecedor extends JInternalFrame {
 		gbl_panelEndereco.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelEndereco.setLayout(gbl_panelEndereco);
 		
-		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon(ViewCliente.class.getResource("/img/images.png")));
-		GridBagConstraints gbc_label_1 = new GridBagConstraints();
-		gbc_label_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_label_1.insets = new Insets(0, 0, 0, 5);
-		gbc_label_1.gridheight = 3;
-		gbc_label_1.gridx = 0;
-		gbc_label_1.gridy = 0;
-		panelEndereco.add(label_1, gbc_label_1);
-		
 		JLabel lblEndereo = new JLabel("Endereço");
 		lblEndereo.setForeground(new Color(255, 255, 255));
 		lblEndereo.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -384,7 +342,6 @@ public class ViewFornecedor extends JInternalFrame {
 		panelEndereco.add(Estado, gbc_Estado);
 		
 		cmbEstado = new JComboBox();
-		cmbEstado.setModel(new DefaultComboBoxModel(new String[] {"Luanda", "Cabinda"}));
 		GridBagConstraints gbc_cmbEstado = new GridBagConstraints();
 		gbc_cmbEstado.anchor = GridBagConstraints.SOUTH;
 		gbc_cmbEstado.fill = GridBagConstraints.HORIZONTAL;
@@ -424,7 +381,6 @@ public class ViewFornecedor extends JInternalFrame {
 		panelEndereco.add(lblCidade_1, gbc_lblCidade_1);
 		
 		cmbCidade = new JComboBox();
-		cmbCidade.setModel(new DefaultComboBoxModel(new String[] {"Luanda", "São Luis", "São Paulo"}));
 		GridBagConstraints gbc_cmbCidade = new GridBagConstraints();
 		gbc_cmbCidade.anchor = GridBagConstraints.NORTH;
 		gbc_cmbCidade.fill = GridBagConstraints.HORIZONTAL;

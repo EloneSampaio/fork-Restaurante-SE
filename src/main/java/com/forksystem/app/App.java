@@ -1,42 +1,39 @@
 package com.forksystem.app;
 
 import java.awt.Dimension;
+import java.util.Properties;
 
 import javax.swing.UIManager;
 
 import com.forksystem.ui.ViewPrincipal;
+import com.forksystem.utils.Config;
 
-import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 import de.javasoft.plaf.synthetica.SyntheticaLookAndFeel;
 
 public class App 
 {
     public static void main( String[] args )
     {
-    	//for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
     	try {
-    	//	if ("Nimbus".equals(info.getName())) {
-		//	UIManager.setLookAndFeel(info.getClassName());
-	//		break;
-	//	}
+    		Properties prop = Config.getPropriedade();
     		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
     		UIManager.put("Synthetica.activateMenuByAltKey", Boolean.TRUE);
-    		UIManager.put("Synthetica.tabbedPane.keepOpacity", true);
-//    		SyntheticaLookAndFeel.setWindowsDecorated(false);
+    		UIManager.put("Synthetica.tabbedPane.keepOpacity", Boolean.TRUE);
+     		SyntheticaLookAndFeel.setWindowsDecorated(false);
 
     		 SyntheticaLookAndFeel.setToolbarSeparatorDimension(new Dimension(1,32));
     		 
-
-
-    		
-    		UIManager.setLookAndFeel(new SyntheticaAluOxideLookAndFeel());
+    		 String tema=prop.getProperty("prop.btn.Tema");
+  
+    		System.out.println(tema);
+    		UIManager.setLookAndFeel(tema);
     		new ViewPrincipal().setVisible(true);
     	
     	} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println(e.getMessage());
 		}
     	
        
-    	//}
+    
     }
 }

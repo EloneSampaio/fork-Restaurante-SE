@@ -68,6 +68,7 @@ public class ViewContasAReceber extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public ViewContasAReceber() {
+		setTitle("Movimentos/Contas a Receber");
 		setIconifiable(true);
 		setClosable(true);
 		getContentPane().setBackground(new Color(0, 128, 128));
@@ -76,30 +77,30 @@ public class ViewContasAReceber extends JInternalFrame {
 		getContentPane().setLayout(null);
 		
 		JLabel label = new JLabel("");
-		label.setBounds(357, 0, 32, 32);
+		label.setBounds(365, 0, 32, 32);
 		label.setIcon(new ImageIcon(ViewContasAReceber.class.getResource("/img/PNG/search.png")));
 		label.setFont(new Font("Dialog", Font.BOLD, 14));
 		getContentPane().add(label);
 		
 		textPesquisar = new JTextField();
-		textPesquisar.setBounds(394, 0, 356, 19);
+		textPesquisar.setBounds(394, 13, 356, 19);
 		textPesquisar.setColumns(10);
 		getContentPane().add(textPesquisar);
 		
-		JLabel lblTotalDeContas = new JLabel("Contas/Recebidas:");
-		lblTotalDeContas.setBounds(12, 112, 157, 18);
+		JLabel lblTotalDeContas = new JLabel("Total/Recebidas:");
+		lblTotalDeContas.setBounds(12, 112, 144, 18);
 		lblTotalDeContas.setForeground(Color.WHITE);
 		lblTotalDeContas.setFont(new Font("Dialog", Font.BOLD, 15));
 		getContentPane().add(lblTotalDeContas);
 		
-		JLabel lblTotalDeContas_1 = new JLabel("Contas/Pagar :");
-		lblTotalDeContas_1.setBounds(276, 112, 135, 18);
+		JLabel lblTotalDeContas_1 = new JLabel("Total/Receber");
+		lblTotalDeContas_1.setBounds(276, 112, 121, 18);
 		lblTotalDeContas_1.setForeground(Color.WHITE);
 		lblTotalDeContas_1.setFont(new Font("Dialog", Font.BOLD, 15));
 		getContentPane().add(lblTotalDeContas_1);
 		
-		JLabel lblTotalDeContas_2 = new JLabel("Contas/Vencidas");
-		lblTotalDeContas_2.setBounds(508, 112, 146, 18);
+		JLabel lblTotalDeContas_2 = new JLabel("Total/Atrasadas");
+		lblTotalDeContas_2.setBounds(508, 112, 144, 18);
 		lblTotalDeContas_2.setForeground(new Color(255, 255, 255));
 		lblTotalDeContas_2.setFont(new Font("Dialog", Font.BOLD, 15));
 		getContentPane().add(lblTotalDeContas_2);
@@ -223,19 +224,19 @@ public class ViewContasAReceber extends JInternalFrame {
 		lblValorpago = new JLabel("");
 		lblValorpago.setForeground(Color.WHITE);
 		lblValorpago.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblValorpago.setBounds(181, 115, 83, 15);
+		lblValorpago.setBounds(168, 115, 96, 15);
 		getContentPane().add(lblValorpago);
 		
 		lblValorApagar = new JLabel("");
 		lblValorApagar.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblValorApagar.setForeground(Color.WHITE);
-		lblValorApagar.setBounds(409, 114, 70, 15);
+		lblValorApagar.setBounds(397, 112, 99, 15);
 		getContentPane().add(lblValorApagar);
 		
 		lblVencidas = new JLabel("");
 		lblVencidas.setForeground(Color.WHITE);
 		lblVencidas.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblVencidas.setBounds(666, 112, 70, 15);
+		lblVencidas.setBounds(650, 115, 86, 15);
 		getContentPane().add(lblVencidas);
 
 	}

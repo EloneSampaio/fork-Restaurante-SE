@@ -18,6 +18,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
+import javax.swing.JLabel;
 
 public class ViewMenuBaixo extends JInternalFrame {
 	private ToolBarOpcao toolBarOpcao;
@@ -78,35 +79,35 @@ public class ViewMenuBaixo extends JInternalFrame {
 	public class TratarEventos implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("produto")) {
-				if (prod == null) {
-					prod = new ProdutoController();
-					prod.gui.setVisible(true);
-					ViewPrincipal.getPainelDesktop().add(prod.gui);
-					} else {
-					prod.gui.setVisible(true);
-				}
-			}
-
-			if (e.getActionCommand().equals("mesa")) {
-				if (mesa == null) {
-					mesa = new MesaController();
-					mesa.gui.setVisible(true);
-					ViewPrincipal.getPainelDesktop().add(mesa.gui);
-				} else {
-					mesa.gui.setVisible(true);
-				}
-			}
-			
-			if (e.getActionCommand().equals("fornecedor")) {
-				if (fornecedor == null) {
-					fornecedor = new FornecedorController();
-					fornecedor.gui.setVisible(true);
-					ViewPrincipal.getPainelDesktop().add(fornecedor.gui);
-					} else {
-					fornecedor.gui.setVisible(true);
-				}
-			}
+//			if (e.getActionCommand().equals("produto")) {
+//				if (prod == null) {
+//					prod = new ProdutoController();
+//					prod.gui.setVisible(true);
+//					ViewPrincipal.getPainelDesktop().add(prod.gui);
+//					} else {
+//					prod.gui.setVisible(true);
+//				}
+//			}
+//
+//			if (e.getActionCommand().equals("mesa")) {
+//				if (mesa == null) {
+//					mesa = new MesaController();
+//					mesa.gui.setVisible(true);
+//					ViewPrincipal.getPainelDesktop().add(mesa.gui);
+//				} else {
+//					mesa.gui.setVisible(true);
+//				}
+//			}
+//			
+//			if (e.getActionCommand().equals("fornecedor")) {
+//				if (fornecedor == null) {
+//					fornecedor = new FornecedorController();
+//					fornecedor.gui.setVisible(true);
+//					ViewPrincipal.getPainelDesktop().add(fornecedor.gui);
+//					} else {
+//					fornecedor.gui.setVisible(true);
+//				}
+//			}
 			
 			
 			

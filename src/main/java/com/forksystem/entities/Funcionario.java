@@ -2,9 +2,8 @@ package com.forksystem.entities;
 
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -20,6 +19,12 @@ public class Funcionario extends Pessoa {
 	@Temporal(TemporalType.DATE)
 	private Calendar admissao;
 	private String imagem;
+	@Column(nullable=false,unique=true)
+	private String login;
+	@Column(nullable=false)
+	private String senha;
+	
+	
 	
 	
 
@@ -53,6 +58,22 @@ public class Funcionario extends Pessoa {
 
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 }
